@@ -294,7 +294,7 @@ if (!isset($_SESSION['username'])) {
 
                             <!-- Results Section -->
                             <div id="result" style="display: none;">
-                                <!-- EOQ Formula Section - DIPERBAIKI -->
+                                <!-- EOQ Formula Section -->
                                 <div class="analysis-section mb-4 eoq-primary">
                                     <div class="section-header">
                                         <h4><i class="fas fa-square-root-alt me-2"></i> FORMULA ECONOMIC ORDER QUANTITY
@@ -303,7 +303,7 @@ if (!isset($_SESSION['username'])) {
                                             <p class="text-muted mb-3">Formula matematika untuk menghitung kuantitas
                                                 pemesanan optimal yang meminimalkan total biaya inventory</p>
 
-                                            <!-- PERBAIKAN: Formula EOQ dengan MathJax -->
+                                            <!-- Formula EOQ dengan MathJax -->
                                             <div class="eoq-formula-display">
                                                 <div class="formula-title mb-3">
                                                     <h5><i class="fas fa-square-root-alt me-2"></i>Formula EOQ:</h5>
@@ -332,7 +332,7 @@ if (!isset($_SESSION['username'])) {
                                                 </div>
                                             </div>
 
-                                            <!-- DIPERBAIKI: Penjelasan biaya pemesanan yang disederhanakan -->
+                                            <!-- Penjelasan biaya pemesanan yang disederhanakan -->
                                             <div class="setup-cost-info mt-3 p-3 bg-warning-light rounded">
                                                 <h6><i class="fas fa-info-circle me-2"></i>Ketentuan Biaya Pemesanan
                                                 </h6>
@@ -356,27 +356,33 @@ if (!isset($_SESSION['username'])) {
                                             data penjualan periode yang dipilih</p>
                                     </div>
 
-                                    <div class="table-responsive mb-4">
-                                        <table class="table table-hover eoq-primary-table" id="eoqAllTable">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 30px;"><i class="fas fa-hashtag me-1"></i>No</th>
-                                                    <th style="width: 250px;"><i class="fas fa-box me-1"></i> Nama
-                                                        Produk</th>
-                                                    <th style="width: 100px;"><i class="fas fa-chart-bar me-1"></i>
-                                                        Demand (D)</th>
-                                                    <th style="width: 120px;"><i class="fas fa-truck me-1"></i> Biaya
-                                                        Pesan (S)</th>
-                                                    <th style="width: 120px;"><i class="fas fa-warehouse me-1"></i>
-                                                        Biaya Simpan (H)</th>
-                                                    <th style="width: 120px;"><i class="fas fa-calculator me-1"></i> EOQ
-                                                        Optimal</th>
-                                                    <th style="width: 80px;"><i class="fas fa-eye me-1"></i> Detail</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="data-eoq-all">
-                                            </tbody>
-                                        </table>
+                                    <!-- UBAH: Tidak menggunakan DataTable, menggunakan table biasa dengan accordion -->
+                                    <div class="eoq-results-container">
+                                        <div class="table-responsive mb-4">
+                                            <table class="table table-hover eoq-primary-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 30px;"><i class="fas fa-hashtag me-1"></i>No
+                                                        </th>
+                                                        <th style="width: 250px;"><i class="fas fa-box me-1"></i> Nama
+                                                            Produk</th>
+                                                        <th style="width: 100px;"><i class="fas fa-chart-bar me-1"></i>
+                                                            Demand (D)</th>
+                                                        <th style="width: 120px;"><i class="fas fa-truck me-1"></i>
+                                                            Biaya Pesan (S)</th>
+                                                        <th style="width: 120px;"><i class="fas fa-warehouse me-1"></i>
+                                                            Biaya Simpan (H)</th>
+                                                        <th style="width: 120px;"><i class="fas fa-calculator me-1"></i>
+                                                            EOQ Optimal</th>
+                                                        <th style="width: 80px;"><i class="fas fa-eye me-1"></i> Detail
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="data-eoq-all">
+                                                    <!-- Data akan diisi oleh JavaScript -->
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -473,107 +479,6 @@ if (!isset($_SESSION['username'])) {
     </div>
     <!-- End of Page Wrapper -->
 
-    <!-- PERBAIKI: Modal untuk detail produk - Dipindahkan ke akhir untuk z-index yang benar -->
-    <div class="modal fade" id="productDetailModal" tabindex="-1" role="dialog"
-        aria-labelledby="productDetailModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="productDetailModalLabel">
-                        <i class="fas fa-info-circle me-2"></i> Detail Analisis EOQ Produk
-                    </h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="detail-card">
-                                <h6><i class="fas fa-box me-2"></i>Informasi Produk</h6>
-                                <table class="table table-sm table-borderless">
-                                    <tr>
-                                        <td><strong>Nama Produk:</strong></td>
-                                        <td id="modal-product-name">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Supplier:</strong></td>
-                                        <td id="modal-supplier">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Harga Produk:</strong></td>
-                                        <td id="modal-product-price">-</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="detail-card">
-                                <h6><i class="fas fa-calculator me-2"></i>Parameter EOQ</h6>
-                                <table class="table table-sm table-borderless">
-                                    <tr>
-                                        <td><strong>Demand (D):</strong></td>
-                                        <td id="modal-demand">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Biaya Pesan (S):</strong></td>
-                                        <td id="modal-setup-cost">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Biaya Simpan (H):</strong></td>
-                                        <td id="modal-holding-cost">-</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <div class="detail-card result-card">
-                                <h6><i class="fas fa-chart-line me-2"></i>Hasil Perhitungan</h6>
-                                <table class="table table-sm table-borderless">
-                                    <tr>
-                                        <td><strong>EOQ Optimal:</strong></td>
-                                        <td id="modal-eoq-optimal" class="text-primary font-weight-bold">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Frekuensi/Tahun:</strong></td>
-                                        <td id="modal-frequency">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Interval (Hari):</strong></td>
-                                        <td id="modal-interval">-</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="detail-card financial-card">
-                                <h6><i class="fas fa-money-bill-wave me-2"></i>Analisis Biaya</h6>
-                                <table class="table table-sm table-borderless">
-                                    <tr>
-                                        <td><strong>Total Cost EOQ:</strong></td>
-                                        <td id="modal-total-cost" class="text-success font-weight-bold">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Nilai Penjualan:</strong></td>
-                                        <td id="modal-sales-value">-</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        <i class="fas fa-times me-1"></i> Tutup
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -621,32 +526,117 @@ if (!isset($_SESSION['username'])) {
     <!-- Custom scripts for all pages-->
     <script src="../../js/sb-admin-2.min.js"></script>
 
-    <script src="../../vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="../../vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
     <!-- Sweet Alert -->
     <script src="../../js/sweetalert2.all.min.js"></script>
 
     <!-- Script untuk fungsi EOQ -->
     <script>
+    // Script untuk fungsi EOQ dengan Accordion Animation System
     $(document).ready(function() {
+        // Global variables
         window.allProductData = null;
         window.allEoqData = null;
         window.allFrequencyData = null;
         window.allSetupCostData = null;
         window.allTotalCostData = null;
 
-        // PERBAIKI: Pastikan modal tidak conflict dengan elemen lain
-        $('#productDetailModal').on('show.bs.modal', function() {
-            $('body').addClass('modal-open');
-            $('.modal-backdrop').css('z-index', '1055');
-            $(this).css('z-index', '1060');
-        });
+        // Add custom easing functions
+        $.easing.easeOutCubic = function(x, t, b, c, d) {
+            return c * ((t = t / d - 1) * t * t + 1) + b;
+        };
 
-        $('#productDetailModal').on('hidden.bs.modal', function() {
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
-        });
+        $.easing.easeInCubic = function(x, t, b, c, d) {
+            return c * (t /= d) * t * t + b;
+        };
+
+        $.easing.easeInOutCubic = function(x, t, b, c, d) {
+            if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
+            return c / 2 * ((t -= 2) * t * t + 2) + b;
+        };
+
+        // Add CSS untuk animasi effects
+        $('<style>').text(`
+        .highlight-detail {
+            background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%) !important;
+            border-left: 4px solid var(--wings-red) !important;
+            animation: highlightPulse 2s ease-in-out;
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { 
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+            }
+            50% { 
+                box-shadow: 0 8px 25px rgba(220, 38, 38, 0.2); 
+            }
+        }
+
+        .hover-effect {
+            background: linear-gradient(135deg, var(--wings-gray-50) 0%, rgba(220, 38, 38, 0.01) 100%) !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(220, 38, 38, 0.3);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .shimmer-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer-effect::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer-slide 1s ease-in-out;
+        }
+
+        @keyframes shimmer-slide {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .animate-in-view {
+            animation: subtleBounce 0.4s ease-out;
+        }
+
+        @keyframes subtleBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .in-viewport .detail-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loading-detail {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    `).appendTo('head');
 
         // Add loading animation to cards
         $('.card').each(function(index) {
@@ -663,6 +653,7 @@ if (!isset($_SESSION['username'])) {
             }
         );
 
+        // Form submission handler
         $('#dataForm').submit(function(event) {
             event.preventDefault();
 
@@ -720,7 +711,7 @@ if (!isset($_SESSION['username'])) {
                     $("#result").show();
                     updateEOQTables(response);
 
-                    // PERBAIKI: Render MathJax setelah content dimuat
+                    // Render MathJax setelah content dimuat
                     if (typeof MathJax !== 'undefined') {
                         MathJax.typesetPromise();
                     }
@@ -769,6 +760,7 @@ if (!isset($_SESSION['username'])) {
             });
         });
 
+        // Update EOQ Tables
         function updateEOQTables(response) {
             var data = response.data;
             var data_eoq_all = response.data_eoq_all;
@@ -791,67 +783,9 @@ if (!isset($_SESSION['username'])) {
             var allEoqTable = buildAllEoqTable(data, data_eoq_all, data_frequency_all, data_total_cost_all,
                 data_setup_cost_all, formatter);
             $('#data-eoq-all').html(allEoqTable);
-
-            // PERBAIKI: Destroy existing DataTable sebelum inisialisasi ulang
-            if ($.fn.DataTable.isDataTable('#eoqAllTable')) {
-                $('#eoqAllTable').DataTable().destroy();
-            }
-
-            // PERBAIKI: Initialize DataTable dengan konfigurasi yang diperbaiki
-            $('#eoqAllTable').DataTable({
-                "pageLength": 10,
-                "lengthMenu": [
-                    [5, 10, 25, 50, -1],
-                    [5, 10, 25, 50, "Semua"]
-                ],
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json"
-                },
-                "order": [
-                    [5, "desc"]
-                ],
-                "columnDefs": [{
-                        "orderable": false,
-                        "targets": [0, 6]
-                    },
-                    {
-                        "width": "30px",
-                        "targets": 0
-                    },
-                    {
-                        "width": "250px",
-                        "targets": 1
-                    },
-                    {
-                        "width": "100px",
-                        "targets": 2
-                    },
-                    {
-                        "width": "120px",
-                        "targets": 3
-                    },
-                    {
-                        "width": "120px",
-                        "targets": 4
-                    },
-                    {
-                        "width": "120px",
-                        "targets": 5
-                    },
-                    {
-                        "width": "80px",
-                        "targets": 6
-                    }
-                ],
-                "autoWidth": false,
-                "responsive": false,
-                "scrollX": true,
-                "fixedColumns": {
-                    leftColumns: 1
-                }
-            });
         }
 
+        // Build EOQ Table with Accordion
         function buildAllEoqTable(data, data_eoq_all, data_frequency_all, data_total_cost_all,
             data_setup_cost_all, formatter) {
             var html = '';
@@ -860,10 +794,14 @@ if (!isset($_SESSION['username'])) {
                 var setupCost = parseFloat(data_setup_cost_all[index]) || (item.harga * 0.12);
                 var holdingCost = Math.max(1000, parseInt(item.biaya_penyimpanan) || 1000);
                 var eoqValue = Math.max(1, parseInt(data_eoq_all[index]) || 1);
+                var frequency = Math.max(1, parseInt(data_frequency_all[index]) || 1);
+                var totalCostEOQ = parseFloat(data_total_cost_all[index]) || 0;
+                var intervalDays = Math.round(365 / frequency);
 
                 var productName = item.nama_produk;
 
-                html += `<tr>
+                // BARIS DATA UTAMA
+                html += `<tr class="main-row" data-index="${index}">
                 <td class="text-center" style="width: 30px;"><strong>${index + 1}</strong></td>
                 <td class="text-left" style="width: 250px;">
                     <span class="font-weight-bold" title="${item.nama_produk}">
@@ -892,57 +830,370 @@ if (!isset($_SESSION['username'])) {
                     </span>
                 </td>
                 <td class="text-center" style="width: 80px;">
-                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="window.showProductDetail(${index})">
-                        <i class="fas fa-eye"></i>
+                    <button type="button" class="btn btn-sm btn-outline-primary toggle-detail" data-index="${index}" 
+                            aria-expanded="false" aria-controls="detail-${index}" title="Lihat detail analisis EOQ">
+                        <i class="fas fa-chevron-down"></i>
                     </button>
+                </td>
+            </tr>`;
+
+                // BARIS DETAIL (TERSEMBUNYI)
+                html += `<tr class="detail-row" id="detail-${index}" style="display: none;" role="region" 
+                     aria-labelledby="detail-header-${index}">
+                <td colspan="7" class="detail-content">
+                    <div class="product-detail-container">
+                        <div class="detail-header" id="detail-header-${index}">
+                            <h5><i class="fas fa-info-circle me-2"></i>Detail Analisis EOQ - ${item.nama_produk}</h5>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="detail-card">
+                                    <h6><i class="fas fa-box me-2"></i>Informasi Produk</h6>
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <td><strong>Nama Produk:</strong></td>
+                                            <td>${item.nama_produk}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Supplier:</strong></td>
+                                            <td>${item.nama_sup}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Harga Produk:</strong></td>
+                                            <td>${formatter.format(item.harga)}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-card">
+                                    <h6><i class="fas fa-calculator me-2"></i>Parameter EOQ</h6>
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <td><strong>Demand (D):</strong></td>
+                                            <td>${demand.toLocaleString('id-ID')} unit</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Biaya Pesan (S):</strong></td>
+                                            <td>${formatter.format(setupCost)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Biaya Simpan (H):</strong></td>
+                                            <td>${formatter.format(holdingCost)}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="detail-card result-card">
+                                    <h6><i class="fas fa-chart-line me-2"></i>Hasil Perhitungan</h6>
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <td><strong>EOQ Optimal:</strong></td>
+                                            <td class="text-primary font-weight-bold">${eoqValue.toLocaleString('id-ID')} unit</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Frekuensi/Tahun:</strong></td>
+                                            <td>${frequency} kali per tahun</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Interval (Hari):</strong></td>
+                                            <td>${intervalDays} hari</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-card financial-card">
+                                    <h6><i class="fas fa-money-bill-wave me-2"></i>Analisis Biaya</h6>
+                                    <table class="table table-sm table-borderless">
+                                        <tr>
+                                            <td><strong>Total Cost EOQ:</strong></td>
+                                            <td class="text-success font-weight-bold">${formatter.format(Math.round(totalCostEOQ))}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Nilai Penjualan:</strong></td>
+                                            <td>${formatter.format(item.pendapatan)}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="detail-card formula-card">
+                                    <h6><i class="fas fa-square-root-alt me-2"></i>Formula Perhitungan</h6>
+                                    <div class="formula-display-detail">
+                                        EOQ = √((2 × D × S) / H)
+                                    </div>
+                                    <div class="calculation-example">
+                                        <small class="text-muted">
+                                            <strong>Perhitungan untuk produk ini:</strong><br>
+                                            EOQ = √((2 × ${demand.toLocaleString('id-ID')} × ${formatter.format(setupCost)}) / ${formatter.format(holdingCost)})<br>
+                                            EOQ = <strong>${eoqValue.toLocaleString('id-ID')} unit</strong>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-actions mt-3 text-center">
+                            <button type="button" class="btn btn-secondary btn-sm toggle-detail" data-index="${index}"
+                                    title="Tutup detail">
+                                <i class="fas fa-chevron-up me-1"></i> Tutup Detail
+                            </button>
+                        </div>
+                    </div>
                 </td>
             </tr>`;
             });
             return html;
         }
 
-        // PERBAIKI: Function untuk menampilkan detail produk dalam modal
-        window.showProductDetail = function(index) {
-            if (!window.allProductData || !window.allEoqData || !window.allFrequencyData || !window
-                .allSetupCostData) {
-                return;
+        // Event handler untuk toggle detail dengan animasi enhanced
+        $(document).on('click', '.toggle-detail', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var index = $(this).data('index');
+            var detailRow = $('#detail-' + index);
+            var mainRow = $(this).closest('.main-row');
+            var icon = $(this).find('i');
+            var button = $(this);
+
+            // Disable button sementara untuk mencegah multiple clicks
+            button.prop('disabled', true);
+
+            // Add ripple effect
+            addRippleEffect(button, e);
+
+            if (detailRow.is(':visible')) {
+                // Tutup detail dengan animasi
+                closeDetailWithAnimation(detailRow, mainRow, icon, button);
+            } else {
+                // Tutup semua detail lain terlebih dahulu
+                closeAllDetails().then(() => {
+                    // Buka detail yang diklik dengan animasi
+                    openDetailWithAnimation(detailRow, mainRow, icon, button, index);
+                });
             }
+        });
 
-            var item = window.allProductData[index];
-            var demand = Math.max(1, parseInt(item.stock_out) || 1);
-            var setupCost = parseFloat(window.allSetupCostData[index]) || (item.harga * 0.12);
-            var holdingCost = Math.max(1000, parseInt(item.biaya_penyimpanan) || 1000);
-            var eoqValue = Math.max(1, parseInt(window.allEoqData[index]) || 1);
-            var frequency = Math.max(1, parseInt(window.allFrequencyData[index]) || 1);
-            var totalCostEOQ = parseFloat(window.allTotalCostData[index]) || 0;
-            var intervalDays = Math.round(365 / frequency);
+        // Function untuk menutup detail dengan animasi
+        function closeDetailWithAnimation(detailRow, mainRow, icon, button) {
+            // Add closing animation class
+            detailRow.addClass('animating-up');
 
-            var formatter = new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
+            // Animate icon rotation
+            icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            button.removeClass('rotating').attr('aria-expanded', 'false');
+
+            // Remove active state from main row
+            mainRow.removeClass('active');
+
+            // Hide with animation
+            detailRow.slideUp(400, 'easeInOutCubic', function() {
+                detailRow.removeClass('animating-up active');
+                button.prop('disabled', false);
+            });
+        }
+
+        // Function untuk membuka detail dengan animasi
+        function openDetailWithAnimation(detailRow, mainRow, icon, button, index) {
+            // Add active state to main row
+            mainRow.addClass('active');
+
+            // Animate icon rotation
+            icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            button.addClass('rotating').attr('aria-expanded', 'true');
+
+            // Add opening animation class
+            detailRow.addClass('animating-down active');
+
+            // Show with animation
+            detailRow.slideDown(500, 'easeOutCubic', function() {
+                detailRow.removeClass('animating-down');
+                button.prop('disabled', false);
+
+                // Trigger staggered animation for detail cards
+                animateDetailCards(detailRow);
+
+                // Scroll to detail dengan smooth animation
+                setTimeout(() => {
+                    scrollToDetail(detailRow);
+                }, 100);
+            });
+        }
+
+        // Function untuk menutup semua detail
+        function closeAllDetails() {
+            return new Promise((resolve) => {
+                var openDetails = $('.detail-row:visible');
+
+                if (openDetails.length === 0) {
+                    resolve();
+                    return;
+                }
+
+                var closePromises = [];
+
+                openDetails.each(function() {
+                    var detailRow = $(this);
+                    var mainRow = detailRow.prev('.main-row');
+                    var toggleButton = mainRow.find('.toggle-detail');
+                    var icon = toggleButton.find('i');
+
+                    var promise = new Promise((resolveClose) => {
+                        // Remove active states
+                        mainRow.removeClass('active');
+                        detailRow.removeClass('active');
+                        icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                        toggleButton.removeClass('rotating').attr('aria-expanded',
+                            'false');
+
+                        // Animate close
+                        detailRow.addClass('animating-up');
+                        detailRow.slideUp(300, 'easeInCubic', function() {
+                            detailRow.removeClass('animating-up');
+                            resolveClose();
+                        });
+                    });
+
+                    closePromises.push(promise);
+                });
+
+                Promise.all(closePromises).then(() => {
+                    resolve();
+                });
+            });
+        }
+
+        // Function untuk animasi detail cards dengan staggered effect
+        function animateDetailCards(detailRow) {
+            var cards = detailRow.find('.detail-card');
+
+            cards.each(function(index) {
+                var card = $(this);
+
+                // Reset animation
+                card.css({
+                    'opacity': '0',
+                    'transform': 'translateY(20px) scale(0.98)'
+                });
+
+                // Animate with delay
+                setTimeout(() => {
+                    card.css({
+                        'transition': 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        'opacity': '1',
+                        'transform': 'translateY(0) scale(1)'
+                    });
+                }, index * 100 + 200);
             });
 
-            // Populate modal data
-            $('#modal-product-name').text(item.nama_produk);
-            $('#modal-supplier').text(item.nama_sup);
-            $('#modal-product-price').text(formatter.format(item.harga));
+            // Animate formula display
+            var formulaDisplay = detailRow.find('.formula-display-detail');
+            if (formulaDisplay.length) {
+                setTimeout(() => {
+                    formulaDisplay.addClass('shimmer-effect');
+                    setTimeout(() => {
+                        formulaDisplay.removeClass('shimmer-effect');
+                    }, 1000);
+                }, 800);
+            }
+        }
 
-            $('#modal-demand').text(demand.toLocaleString('id-ID') + ' unit');
-            $('#modal-setup-cost').text(formatter.format(setupCost));
-            $('#modal-holding-cost').text(formatter.format(holdingCost));
+        // Function untuk smooth scroll ke detail
+        function scrollToDetail(detailRow) {
+            var targetOffset = detailRow.offset().top - 120;
 
-            $('#modal-eoq-optimal').text(eoqValue.toLocaleString('id-ID') + ' unit');
-            $('#modal-frequency').text(frequency + ' kali per tahun');
-            $('#modal-interval').text(intervalDays + ' hari');
+            $('html, body').animate({
+                scrollTop: targetOffset
+            }, {
+                duration: 600,
+                easing: 'easeOutCubic',
+                complete: function() {
+                    // Add subtle highlight effect
+                    detailRow.addClass('highlight-detail');
+                    setTimeout(() => {
+                        detailRow.removeClass('highlight-detail');
+                    }, 2000);
+                }
+            });
+        }
 
-            $('#modal-total-cost').text(formatter.format(Math.round(totalCostEOQ)));
-            $('#modal-sales-value').text(formatter.format(item.pendapatan));
+        // Function untuk ripple effect
+        function addRippleEffect(button, event) {
+            var ripple = $('<span class="ripple"></span>');
 
-            // PERBAIKI: Show modal dengan proper handling
-            $('#productDetailModal').modal('show');
-        };
+            var size = Math.max(button.outerWidth(), button.outerHeight());
+            var x = event.pageX - button.offset().left - size / 2;
+            var y = event.pageY - button.offset().top - size / 2;
 
+            ripple.css({
+                width: size,
+                height: size,
+                left: x,
+                top: y
+            });
+
+            button.append(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        }
+
+        // Add hover effects untuk main rows
+        $(document).on('mouseenter', '.main-row', function() {
+            if (!$(this).hasClass('active')) {
+                $(this).addClass('hover-effect');
+            }
+        });
+
+        $(document).on('mouseleave', '.main-row', function() {
+            $(this).removeClass('hover-effect');
+        });
+
+        // Add keyboard navigation
+        $(document).on('keydown', '.toggle-detail', function(e) {
+            if (e.keyCode === 13 || e.keyCode === 32) { // Enter or Space
+                e.preventDefault();
+                $(this).trigger('click');
+            }
+        });
+
+        // Performance optimization: Debounce scroll events
+        let scrollTimeout;
+        $(window).on('scroll', function() {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                // Update visible detail animations
+                $('.detail-row:visible').each(function() {
+                    var detailRow = $(this);
+                    var rect = this.getBoundingClientRect();
+                    var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+                    if (isVisible && !detailRow.hasClass('in-viewport')) {
+                        detailRow.addClass('in-viewport');
+                        // Trigger subtle animations for cards dalam viewport
+                        detailRow.find('.detail-card').each(function(index) {
+                            var card = $(this);
+                            setTimeout(() => {
+                                card.addClass('animate-in-view');
+                            }, index * 50);
+                        });
+                    }
+                });
+            }, 100);
+        });
+
+        // Print button handler
         $('#btnPrint').click(function() {
             if (!window.allProductData || !window.allEoqData || !window.allFrequencyData) {
                 Swal.fire({
@@ -974,6 +1225,7 @@ if (!isset($_SESSION['username'])) {
                 '&sampai=' + sampai);
         });
 
+        // Data save function
         function dataToSave(allProductData, allEoqData, allFrequencyData, allSetupCostData) {
             var dataToSave = [];
             $.each(allProductData, function(index, d) {
@@ -995,6 +1247,17 @@ if (!isset($_SESSION['username'])) {
             });
             return dataToSave;
         }
+
+        // Initialize tooltips if Bootstrap is available
+        if (typeof $().tooltip === 'function') {
+            $('[title]').tooltip({
+                placement: 'top',
+                trigger: 'hover'
+            });
+        }
+
+        // Console log untuk debugging
+        console.log('EOQ System with Accordion Animation initialized successfully!');
     });
     </script>
 

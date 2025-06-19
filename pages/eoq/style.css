@@ -24,191 +24,375 @@ body {
   color: var(--wings-gray-800);
 }
 
-/* PERBAIKI: Modal Z-index dan backdrop issues */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1050;
-  display: none;
-  width: 100%;
-  height: 100%;
+/* TAMBAH: Accordion Animation System */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    max-height: 1000px;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeInDetails {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Detail row styling dengan animasi */
+.detail-row {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-top: 2px solid var(--wings-red);
   overflow: hidden;
-  outline: 0;
-}
-
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1040;
-  width: 100vw;
-  height: 100vh;
-  background-color: #000;
-}
-
-.modal.show .modal-dialog {
-  transform: none !important;
-}
-
-@media (max-width: 576px) {
-  .modal-dialog {
-    margin: 1rem;
-    min-height: calc(100% - 2rem);
-  }
-
-  .modal-dialog.modal-lg {
-    width: calc(100% - 2rem);
-    max-width: none;
-  }
-}
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    margin: 1.75rem auto;
-    min-height: calc(100% - 3.5rem);
-  }
-
-  .modal-dialog.modal-lg {
-    max-width: 800px;
-  }
-}
-
-@media (min-width: 992px) {
-  .modal-dialog.modal-lg {
-    max-width: 900px;
-  }
-}
-
-.modal-dialog {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  width: auto;
-  margin: 1.75rem auto;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  min-height: calc(100% - 3.5rem);
 }
 
-.modal-dialog.modal-lg {
-  max-width: 900px;
-  width: 90%;
+.detail-row.animating-down {
+  animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* PERBAIKI: Modal content styling */
-.modal-content {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  pointer-events: auto;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: none;
+.detail-row.animating-up {
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.detail-content {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.product-detail-container {
+  background: white;
+  margin: 1rem;
   border-radius: 12px;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
-  outline: 0;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--wings-gray-200);
+  animation: fadeInDetails 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: top center;
 }
 
-.modal-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 1rem 1.5rem;
-  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
-  color: white;
-  border-bottom: none;
-  border-radius: 12px 12px 0 0 !important;
-}
-
-.modal-body {
-  position: relative;
-  flex: 1 1 auto;
-  padding: 1rem;
-}
-
-.modal-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--wings-gray-200);
-  border-bottom-right-radius: 12px;
-  border-bottom-left-radius: 12px;
-}
-
-/* TAMBAH: Math formula styling dengan MathJax */
-.eoq-formula-display {
-  background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
-  border: 2px solid var(--wings-red);
-  border-radius: 12px;
-  padding: 2rem;
-  margin: 1.5rem 0;
+.detail-header {
   text-align: center;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.15);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--wings-red);
+  animation: bounceIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
 }
 
-.formula-title h5 {
+.detail-header h5 {
   color: var(--wings-red);
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin: 0;
+  font-size: 1.2rem;
 }
 
-.math-formula-container {
-  background: white;
-  padding: 2rem;
+/* Toggle button styling dengan animasi */
+.toggle-detail {
+  border-color: var(--wings-red);
+  color: var(--wings-red);
+  background-color: transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.toggle-detail:hover {
+  background-color: var(--wings-red);
+  border-color: var(--wings-red);
+  color: white;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+.toggle-detail:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.toggle-detail i {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+.toggle-detail.rotating i {
+  transform: rotate(180deg) scale(1.1);
+}
+
+/* Ripple effect untuk button */
+.toggle-detail::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(220, 38, 38, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+.toggle-detail:active::before {
+  width: 100px;
+  height: 100px;
+}
+
+/* Main row hover effect dengan animasi */
+.main-row {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+}
+
+.main-row:hover {
+  background: linear-gradient(
+    135deg,
+    var(--wings-gray-50) 0%,
+    rgba(220, 38, 38, 0.02) 100%
+  );
+  transform: translateY(-1px) scale(1.002);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.main-row.active {
+  background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+  border-left: 4px solid var(--wings-red);
+}
+
+/* Detail cards dalam accordion dengan staggered animation */
+.product-detail-container .detail-card {
+  background: var(--wings-white);
+  border: 1px solid var(--wings-gray-200);
   border-radius: 8px;
-  margin: 1rem 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-size: 1.5rem;
-  min-height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  height: auto;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: bounceIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* TAMBAH: MathJax specific styling */
-.MathJax {
-  outline: 0;
-  color: var(--wings-red) !important;
+.product-detail-container .detail-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.product-detail-container .detail-card:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.product-detail-container .detail-card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.product-detail-container .detail-card:nth-child(4) {
+  animation-delay: 0.25s;
 }
 
-.MathJax_Display {
-  text-align: center !important;
-  margin: 1em 0 !important;
+.product-detail-container .detail-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: var(--wings-red);
 }
 
-.formula-parameters {
+.product-detail-container .detail-card h6 {
+  color: var(--wings-red);
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--wings-gray-200);
+  font-size: 0.95rem;
+  position: relative;
+}
+
+.product-detail-container .detail-card h6::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--wings-red);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-detail-container .detail-card:hover h6::after {
+  width: 100%;
+}
+
+/* Formula display dalam detail dengan animasi */
+.formula-display-detail {
+  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0.5rem 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.formula-display-detail::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: all 0.6s;
+  opacity: 0;
+}
+
+.formula-display-detail:hover::before {
+  animation: shimmer 1s ease-in-out;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+.calculation-example {
   background: var(--wings-gray-50);
   padding: 1rem;
   border-radius: 8px;
   margin-top: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 4px solid var(--wings-info);
 }
 
-.parameter-item {
-  padding: 0.5rem;
+.calculation-example:hover {
+  background: #f0f9ff;
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.1);
+}
+
+/* Formula card dalam detail */
+.formula-card {
+  background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+  border: 2px solid var(--wings-red);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.formula-card:hover {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.2);
+}
+
+/* Detail actions dengan animasi */
+.detail-actions {
+  padding: 1rem 0;
+  border-top: 1px solid var(--wings-gray-200);
+  margin-top: 1rem;
   text-align: center;
+  animation: fadeInDetails 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+}
+
+.detail-actions .btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.detail-actions .btn:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Table dalam detail dengan animasi */
+.product-detail-container .table-borderless {
+  animation: fadeInDetails 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+.product-detail-container .table-borderless td {
+  border: none !important;
+  padding: 0.5rem 0;
+  vertical-align: top;
   font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.product-detail-container .table-borderless tr:hover td {
+  background-color: rgba(220, 38, 38, 0.02);
+  transform: translateX(3px);
+}
+
+.product-detail-container .table-borderless td:first-child {
+  width: 45%;
   color: var(--wings-gray-700);
   font-weight: 500;
 }
 
-/* PERBAIKI: Setup cost info yang disederhanakan */
-.setup-cost-info {
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  border: 1px solid #f59e0b;
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.setup-cost-info h6 {
-  color: #92400e;
+.product-detail-container .table-borderless td:last-child {
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  color: var(--wings-gray-800);
 }
 
-.bg-warning-light {
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+/* Loading animation */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.loading-detail {
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 /* Sidebar Styles */
@@ -469,7 +653,80 @@ label {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* PERBAIKI: Table header dan body alignment */
+/* Math formula styling dengan MathJax */
+.eoq-formula-display {
+  background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+  border: 2px solid var(--wings-red);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.15);
+}
+
+.formula-title h5 {
+  color: var(--wings-red);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.math-formula-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1.5rem;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.MathJax {
+  outline: 0;
+  color: var(--wings-red) !important;
+}
+
+.MathJax_Display {
+  text-align: center !important;
+  margin: 1em 0 !important;
+}
+
+.formula-parameters {
+  background: var(--wings-gray-50);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.parameter-item {
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--wings-gray-700);
+  font-weight: 500;
+}
+
+/* Setup cost info */
+.setup-cost-info {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.setup-cost-info h6 {
+  color: #92400e;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.bg-warning-light {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+}
+
+/* Table styles */
 .eoq-primary-table {
   table-layout: fixed;
   width: 100%;
@@ -505,7 +762,6 @@ label {
   word-wrap: break-word;
 }
 
-/* PERBAIKI: Specific column widths untuk alignment yang konsisten */
 .eoq-primary-table thead th:nth-child(1),
 .eoq-primary-table tbody td:nth-child(1) {
   width: 30px;
@@ -572,144 +828,65 @@ label {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* PERBAIKI: DataTables styling improvements */
-.dataTables_wrapper {
-  font-size: 0.875rem;
-}
-
-.dataTables_wrapper .dataTables_length,
-.dataTables_wrapper .dataTables_filter {
-  margin-bottom: 1rem;
-}
-
-.dataTables_wrapper .dataTables_length select {
-  background-color: white;
-  border: 1px solid var(--wings-gray-300);
-  border-radius: 4px;
+/* Enhanced value badges */
+.demand-value,
+.cost-value,
+.eoq-value-primary {
   padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-  width: auto;
-  display: inline-block;
-}
-
-.dataTables_wrapper .dataTables_filter input {
-  background-color: white;
-  border: 1px solid var(--wings-gray-300);
-  border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-  margin-left: 0.5rem;
-  width: 200px;
-}
-
-.dataTables_wrapper .dataTables_paginate {
-  margin-top: 1rem;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-  padding: 0.25rem 0.5rem;
-  margin: 0 0.125rem;
-  border: 1px solid var(--wings-gray-300);
-  border-radius: 4px;
-  background-color: white;
-  color: var(--wings-gray-700);
-  text-decoration: none;
-  display: inline-block;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  background-color: var(--wings-red);
-  color: white;
-  border-color: var(--wings-red);
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-  background-color: var(--wings-red);
-  color: white;
-  border-color: var(--wings-red);
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
-  background-color: var(--wings-gray-100);
-  color: var(--wings-gray-400);
-  border-color: var(--wings-gray-200);
-  cursor: not-allowed;
-}
-
-.dataTables_wrapper .dataTables_info {
-  margin-top: 1rem;
-  font-size: 0.875rem;
-  color: var(--wings-gray-600);
-}
-
-/* PERBAIKI: Modal styling untuk detail produk */
-.detail-card {
-  background: var(--wings-white);
-  border: 1px solid var(--wings-gray-200);
-  border-radius: 8px;
-  padding: 1.2rem;
-  margin-bottom: 1rem;
-  height: 90%;
-}
-
-.detail-card h6 {
-  color: var(--wings-red);
+  font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--wings-gray-200);
-  font-size: 1rem;
+  white-space: nowrap;
+  border-radius: 4px;
+  display: inline-block;
+  min-width: 70px;
+  text-align: center;
 }
 
-.result-card {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  border-color: var(--wings-info);
+.demand-value {
+  color: var(--wings-info);
+  background: #f0f9ff;
+  border: 1px solid #0284c7;
 }
 
-.financial-card {
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  border-color: var(--wings-success);
+.cost-value {
+  color: var(--wings-secondary);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
 }
 
-.table-borderless td {
-  border: none !important;
-  padding: 0.5rem 0;
-  vertical-align: top;
+.eoq-value-primary {
+  color: var(--wings-red);
+  border: 1px solid var(--wings-red);
+  background: #fff5f5;
+  font-weight: 700;
 }
 
-.table-borderless td:first-child {
-  width: 45%;
-  color: var(--wings-gray-700);
+.cost-value small {
+  display: block;
+  font-size: 0.65rem;
+  margin-top: 0.1rem;
+  opacity: 0.8;
   font-weight: 500;
 }
 
-.table-borderless td:last-child {
-  font-weight: 600;
+.cost-value.setup-cost {
+  color: var(--wings-warning);
+  background: #fffbeb;
+  border: 1px solid #fed7aa;
+  font-weight: 700;
+}
+
+.cost-value.setup-cost small {
+  color: #92400e;
+  font-weight: 500;
+}
+
+.eoq-primary-table tbody td:nth-child(2) .font-weight-bold {
   color: var(--wings-gray-800);
-}
-
-/* PERBAIKI: Button styling */
-.btn-outline-primary.btn-sm {
-  border-color: var(--wings-red);
-  color: var(--wings-red);
-  font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  transition: all 0.2s ease;
-  border-radius: 4px;
-  min-width: auto;
-  background-color: transparent;
-}
-
-.btn-outline-primary.btn-sm:hover {
-  background-color: var(--wings-red);
-  border-color: var(--wings-red);
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
-}
-
-.btn-outline-primary.btn-sm:focus {
-  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.3;
+  display: block;
 }
 
 /* Implementation Guide */
@@ -769,68 +946,6 @@ label {
   font-weight: 700;
   color: var(--wings-success);
   font-size: 0.85rem;
-}
-
-/* PERBAIKI: Enhanced value badges dengan styling yang konsisten */
-.demand-value,
-.cost-value,
-.eoq-value-primary {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  white-space: nowrap;
-  border-radius: 4px;
-  display: inline-block;
-  min-width: 70px;
-  text-align: center;
-}
-
-.demand-value {
-  color: var(--wings-info);
-  background: #f0f9ff;
-  border: 1px solid #0284c7;
-}
-
-.cost-value {
-  color: var(--wings-secondary);
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-}
-
-.eoq-value-primary {
-  color: var(--wings-red);
-  border: 1px solid var(--wings-red);
-  background: #fff5f5;
-  font-weight: 700;
-}
-
-.cost-value small {
-  display: block;
-  font-size: 0.65rem;
-  margin-top: 0.1rem;
-  opacity: 0.8;
-  font-weight: 500;
-}
-
-.cost-value.setup-cost {
-  color: var(--wings-warning);
-  background: #fffbeb;
-  border: 1px solid #fed7aa;
-  font-weight: 700;
-}
-
-.cost-value.setup-cost small {
-  color: #92400e;
-  font-weight: 500;
-}
-
-/* Product name styling */
-.eoq-primary-table tbody td:nth-child(2) .font-weight-bold {
-  color: var(--wings-gray-800);
-  font-size: 0.85rem;
-  font-weight: 600;
-  line-height: 1.3;
-  display: block;
 }
 
 /* Action Buttons */
@@ -944,7 +1059,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: auto;
 }
 
-/* PERBAIKI: Responsive design improvements */
+/* Responsive design improvements */
 @media (max-width: 1200px) {
   .math-formula-container {
     font-size: 1.2rem;
@@ -963,17 +1078,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     min-width: 200px;
   }
 
-  .modal-dialog.modal-lg {
-    max-width: 95%;
+  .product-detail-container {
+    margin: 0.8rem;
+    padding: 1.2rem;
   }
 }
 
 @media (max-width: 768px) {
-  .modal-dialog.modal-lg {
-    max-width: 95%;
-    margin: 1rem auto;
-  }
-
   .math-formula-container {
     font-size: 1rem;
     padding: 1rem;
@@ -989,9 +1100,23 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     min-width: 150px;
   }
 
-  .detail-card {
-    margin-bottom: 0.8rem;
+  .product-detail-container {
+    margin: 0.5rem;
     padding: 1rem;
+  }
+
+  .detail-header h5 {
+    font-size: 1rem;
+  }
+
+  .product-detail-container .detail-card {
+    margin-bottom: 0.8rem;
+    padding: 0.8rem;
+  }
+
+  .formula-display-detail {
+    font-size: 0.9rem;
+    padding: 0.6rem;
   }
 
   .table-borderless td:first-child {
@@ -1017,17 +1142,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     padding: 0.6rem 0.2rem;
   }
 
-  .btn-outline-primary.btn-sm {
-    padding: 0.15rem 0.3rem;
-    font-size: 0.65rem;
-  }
-
-  .btn-outline-primary.btn-sm i {
+  .toggle-detail {
+    min-width: 35px;
+    padding: 0.2rem 0.4rem;
     font-size: 0.7rem;
-  }
-
-  .dataTables_wrapper .dataTables_filter input {
-    width: 150px;
   }
 }
 
@@ -1069,7 +1187,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     min-width: 60px;
   }
 
-  .btn-outline-primary.btn-sm {
+  .toggle-detail {
+    min-width: 30px;
     padding: 0.15rem 0.3rem;
     font-size: 0.65rem;
   }
@@ -1141,18 +1260,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin: 0.5rem 0;
   }
 
-  .dataTables_wrapper .dataTables_filter input {
-    width: 120px;
-    margin-left: 0.25rem;
+  .product-detail-container {
+    margin: 0.25rem;
+    padding: 0.8rem;
   }
 
-  .dataTables_wrapper .dataTables_length select {
-    padding: 0.15rem 0.3rem;
-    font-size: 0.8rem;
+  .product-detail-container .row {
+    margin: 0;
+  }
+
+  .product-detail-container .col-md-6 {
+    padding: 0 0.25rem;
   }
 }
 
-/* PERBAIKI: Responsive design untuk Implementation Guide */
+/* Responsive untuk Implementation Guide */
 @media (max-width: 992px) {
   .eoq-description .row {
     flex-direction: column;
@@ -1244,6 +1366,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     background: #fef3c7 !important;
     print-color-adjust: exact;
   }
+
+  .detail-row {
+    display: none !important;
+  }
 }
 
 /* Scrollbar styling */
@@ -1270,7 +1396,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background: #b91c1c;
 }
 
-/* PERBAIKI: Additional utility classes */
+/* Additional utility classes */
 .text-muted {
   color: var(--wings-gray-600) !important;
 }
@@ -1299,116 +1425,30 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-right: 1rem;
 }
 
-/* PERBAIKI: Bootstrap modal override untuk mengatasi masalah tampil gonta-ganti */
-.modal.fade .modal-dialog {
-  transition: transform 0.3s ease-out;
-  transform: translateY(-50px);
+/* Highlight active detail */
+.detail-row.active {
+  background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
 }
 
-.modal.show .modal-dialog {
-  transform: none;
+/* Improved spacing */
+.eoq-results-container {
+  position: relative;
 }
 
-.modal.fade.show {
-  opacity: 1;
-}
-
-.modal.fade {
-  opacity: 0;
-  transition: opacity 0.15s linear;
-}
-
-/* PERBAIKI: Prevent modal backdrop issues */
-.modal-backdrop.fade {
-  opacity: 0;
-}
-
-.modal-backdrop.show {
-  opacity: 0.5;
-}
-
-/* PERBAIKI: Ensure modal is always visible when shown */
-.modal.show {
-  display: block !important;
-}
-
-/* PERBAIKI: Prevent body scroll when modal is open */
-body.modal-open {
-  overflow: hidden;
-}
-
-/* PERBAIKI: Modal close button styling */
-.modal-header .close {
-  padding: 0;
-  background-color: transparent;
-  border: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1;
-  color: white;
-  text-shadow: none;
-  opacity: 1;
-}
-
-.modal-header .close:hover {
-  opacity: 0.8;
-}
-
-/* PERBAIKI: Prevent layout shift when DataTable loads */
-.eoq-primary-table.dataTable {
-  width: 100% !important;
-}
-
-.dataTables_wrapper .eoq-primary-table {
-  margin: 0 !important;
-}
-
-/* PERBAIKI: DataTable responsive fixes */
-.dataTables_scrollHead,
-.dataTables_scrollBody {
-  overflow: visible !important;
-}
-
-.dataTables_scrollHeadInner {
-  width: 100% !important;
-}
-
-.dataTables_scrollHeadInner table {
-  width: 100% !important;
-}
-
-/* PERBAIKI: Ensure table cells maintain proper width */
-.eoq-primary-table.dataTable thead th,
-.eoq-primary-table.dataTable tbody td {
-  box-sizing: border-box;
-}
-
-/* PERBAIKI: Loading state untuk DataTable */
-.dataTables_processing {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 200px;
-  margin-left: -100px;
-  margin-top: -26px;
-  text-align: center;
-  padding: 1rem;
-  background-color: white;
-  border: 1px solid var(--wings-gray-300);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1001;
-}
-
-/* PERBAIKI: Fix untuk browser compatibility */
+/* Prevent DataTable conflicts */
 .eoq-primary-table {
-  -webkit-border-horizontal-spacing: 0;
-  -webkit-border-vertical-spacing: 0;
-  border-collapse: separate;
-  border-spacing: 0;
+  width: 100% !important;
+  table-layout: auto;
 }
 
-/* PERBAIKI: Smooth transitions untuk semua elemen interaktif */
+/* Ensure proper column alignment */
+.eoq-primary-table thead th,
+.eoq-primary-table tbody td {
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Smooth transitions untuk semua elemen interaktif */
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1422,9 +1462,8 @@ body.modal-open {
   box-sizing: border-box;
 }
 
-/* PERBAIKI: Ensure proper font rendering */
+/* Ensure proper font rendering */
 body,
-.modal,
 .table,
 .btn {
   -webkit-font-smoothing: antialiased;
