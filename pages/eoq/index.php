@@ -25,6 +25,9 @@ if (!isset($_SESSION['username'])) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
+    <!-- MathJax for formula display -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+
     <!-- Sweet Alert -->
     <link rel="stylesheet" href="../../css/sweetalert2.min.css">
 
@@ -291,43 +294,54 @@ if (!isset($_SESSION['username'])) {
 
                             <!-- Results Section -->
                             <div id="result" style="display: none;">
-                                <!-- EOQ Formula Section -->
+                                <!-- EOQ Formula Section - DIPERBAIKI -->
                                 <div class="analysis-section mb-4 eoq-primary">
                                     <div class="section-header">
                                         <h4><i class="fas fa-square-root-alt me-2"></i> FORMULA ECONOMIC ORDER QUANTITY
                                             (EOQ)</h4>
                                         <div class="eoq-description">
-                                            <p class="text-muted mb-2">Formula matematika untuk menghitung kuantitas
+                                            <p class="text-muted mb-3">Formula matematika untuk menghitung kuantitas
                                                 pemesanan optimal yang meminimalkan total biaya inventory</p>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="eoq-formula-card">
-                                                        <h6><i class="fas fa-square-root-alt me-1"></i> Formula EOQ:
-                                                        </h6>
-                                                        <div class="formula-display">
-                                                            EOQ = √((2 × D × S) / H)
+
+                                            <!-- PERBAIKAN: Formula EOQ dengan MathJax -->
+                                            <div class="eoq-formula-display">
+                                                <div class="formula-title mb-3">
+                                                    <h5><i class="fas fa-square-root-alt me-2"></i>Formula EOQ:</h5>
+                                                </div>
+                                                <div class="math-formula-container">
+                                                    $$EOQ = \sqrt{\frac{2 \times D \times S}{H}}$$
+                                                </div>
+                                                <div class="formula-parameters mt-3">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="parameter-item">
+                                                                <strong>D</strong> = Demand (permintaan tahunan)
+                                                            </div>
                                                         </div>
-                                                        <small class="text-muted">
-                                                            <strong>D</strong> = Demand (permintaan tahunan)<br>
-                                                            <strong>S</strong> = Setup/Order cost (biaya pemesanan)<br>
-                                                            <strong>H</strong> = Holding cost (biaya penyimpanan per
-                                                            unit)
-                                                        </small>
+                                                        <div class="col-md-4">
+                                                            <div class="parameter-item">
+                                                                <strong>S</strong> = Setup/Order cost (biaya pemesanan)
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="parameter-item">
+                                                                <strong>H</strong> = Holding cost (biaya penyimpanan)
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="eoq-benefits-card">
-                                                        <h6><i class="fas fa-chart-line me-1"></i> Komponen Biaya:</h6>
-                                                        <ul class="benefits-list">
-                                                            <li><strong>Biaya Pemesanan (S):</strong> Rp 50.000 per
-                                                                pesanan</li>
-                                                            <li><strong>Biaya Penyimpanan (H):</strong> Sesuai data
-                                                                produk</li>
-                                                            <li><strong>Total Cost EOQ:</strong> √(2 × D × S × H)</li>
-                                                            <li><strong>Frekuensi:</strong> D / EOQ kali per tahun</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                            </div>
+
+                                            <!-- DIPERBAIKI: Penjelasan biaya pemesanan yang disederhanakan -->
+                                            <div class="setup-cost-info mt-3 p-3 bg-warning-light rounded">
+                                                <h6><i class="fas fa-info-circle me-2"></i>Ketentuan Biaya Pemesanan
+                                                </h6>
+                                                <p class="mb-0">
+                                                    <strong>Biaya pemesanan ditetapkan sebesar 12% dari harga
+                                                        produk</strong>
+                                                    untuk mencakup biaya administratif dan logistik sesuai standar
+                                                    operasional.
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -346,63 +360,23 @@ if (!isset($_SESSION['username'])) {
                                         <table class="table table-hover eoq-primary-table" id="eoqAllTable">
                                             <thead>
                                                 <tr>
-                                                    <th width="50"><i class="fas fa-hashtag me-1"></i> No</th>
-                                                    <th><i class="fas fa-box me-1"></i> Nama Produk</th>
-                                                    <th><i class="fas fa-chart-bar me-1"></i> Demand (D)</th>
-                                                    <th><i class="fas fa-truck me-1"></i> Biaya Pesan (S)</th>
-                                                    <th><i class="fas fa-warehouse me-1"></i> Biaya Simpan (H)</th>
-                                                    <th><i class="fas fa-calculator me-1"></i> EOQ Optimal</th>
-                                                    <th><i class="fas fa-redo me-1"></i> Frekuensi/Tahun</th>
-                                                    <th><i class="fas fa-money-bill-wave me-1"></i> Total Cost EOQ</th>
-                                                    <th><i class="fas fa-calendar me-1"></i> Interval (Hari)</th>
-                                                    <th><i class="fas fa-dollar-sign me-1"></i> Nilai Penjualan</th>
+                                                    <th style="width: 30px;"><i class="fas fa-hashtag me-1"></i>No</th>
+                                                    <th style="width: 250px;"><i class="fas fa-box me-1"></i> Nama
+                                                        Produk</th>
+                                                    <th style="width: 100px;"><i class="fas fa-chart-bar me-1"></i>
+                                                        Demand (D)</th>
+                                                    <th style="width: 120px;"><i class="fas fa-truck me-1"></i> Biaya
+                                                        Pesan (S)</th>
+                                                    <th style="width: 120px;"><i class="fas fa-warehouse me-1"></i>
+                                                        Biaya Simpan (H)</th>
+                                                    <th style="width: 120px;"><i class="fas fa-calculator me-1"></i> EOQ
+                                                        Optimal</th>
+                                                    <th style="width: 80px;"><i class="fas fa-eye me-1"></i> Detail</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="data-eoq-all">
                                             </tbody>
                                         </table>
-                                    </div>
-
-                                    <!-- EOQ Summary Statistics -->
-                                    <div class="eoq-summary-cards">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="summary-card cost-savings">
-                                                    <div class="card-body text-center">
-                                                        <i class="fas fa-chart-pie fa-2x mb-2"></i>
-                                                        <h6>Total Produk</h6>
-                                                        <span id="total-products">0 produk</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="summary-card avg-eoq">
-                                                    <div class="card-body text-center">
-                                                        <i class="fas fa-boxes fa-2x mb-2"></i>
-                                                        <h6>Rata-rata EOQ</h6>
-                                                        <span id="avg-eoq">0 unit</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="summary-card total-frequency">
-                                                    <div class="card-body text-center">
-                                                        <i class="fas fa-sync-alt fa-2x mb-2"></i>
-                                                        <h6>Total Frekuensi</h6>
-                                                        <span id="total-frequency">0 kali</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="summary-card working-capital">
-                                                    <div class="card-body text-center">
-                                                        <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
-                                                        <h6>Total Cost EOQ</h6>
-                                                        <span id="total-cost-eoq">Rp 0</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -433,7 +407,7 @@ if (!isset($_SESSION['username'])) {
                                                 <div class="kpi-list">
                                                     <div class="kpi-item">
                                                         <span class="kpi-name">Biaya Pemesanan (S):</span>
-                                                        <span class="kpi-target">Rp 50.000 per pesanan</span>
+                                                        <span class="kpi-target">12% dari harga produk</span>
                                                     </div>
                                                     <div class="kpi-item">
                                                         <span class="kpi-name">Biaya Penyimpanan (H):</span>
@@ -499,6 +473,107 @@ if (!isset($_SESSION['username'])) {
     </div>
     <!-- End of Page Wrapper -->
 
+    <!-- PERBAIKI: Modal untuk detail produk - Dipindahkan ke akhir untuk z-index yang benar -->
+    <div class="modal fade" id="productDetailModal" tabindex="-1" role="dialog"
+        aria-labelledby="productDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="productDetailModalLabel">
+                        <i class="fas fa-info-circle me-2"></i> Detail Analisis EOQ Produk
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="detail-card">
+                                <h6><i class="fas fa-box me-2"></i>Informasi Produk</h6>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Nama Produk:</strong></td>
+                                        <td id="modal-product-name">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Supplier:</strong></td>
+                                        <td id="modal-supplier">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Harga Produk:</strong></td>
+                                        <td id="modal-product-price">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-card">
+                                <h6><i class="fas fa-calculator me-2"></i>Parameter EOQ</h6>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Demand (D):</strong></td>
+                                        <td id="modal-demand">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Biaya Pesan (S):</strong></td>
+                                        <td id="modal-setup-cost">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Biaya Simpan (H):</strong></td>
+                                        <td id="modal-holding-cost">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="detail-card result-card">
+                                <h6><i class="fas fa-chart-line me-2"></i>Hasil Perhitungan</h6>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>EOQ Optimal:</strong></td>
+                                        <td id="modal-eoq-optimal" class="text-primary font-weight-bold">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Frekuensi/Tahun:</strong></td>
+                                        <td id="modal-frequency">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Interval (Hari):</strong></td>
+                                        <td id="modal-interval">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-card financial-card">
+                                <h6><i class="fas fa-money-bill-wave me-2"></i>Analisis Biaya</h6>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Total Cost EOQ:</strong></td>
+                                        <td id="modal-total-cost" class="text-success font-weight-bold">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Nilai Penjualan:</strong></td>
+                                        <td id="modal-sales-value">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -555,9 +630,23 @@ if (!isset($_SESSION['username'])) {
     <!-- Script untuk fungsi EOQ -->
     <script>
     $(document).ready(function() {
-        var allProductData;
-        var allEoqData;
-        var allFrequencyData;
+        window.allProductData = null;
+        window.allEoqData = null;
+        window.allFrequencyData = null;
+        window.allSetupCostData = null;
+        window.allTotalCostData = null;
+
+        // PERBAIKI: Pastikan modal tidak conflict dengan elemen lain
+        $('#productDetailModal').on('show.bs.modal', function() {
+            $('body').addClass('modal-open');
+            $('.modal-backdrop').css('z-index', '1055');
+            $(this).css('z-index', '1060');
+        });
+
+        $('#productDetailModal').on('hidden.bs.modal', function() {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        });
 
         // Add loading animation to cards
         $('.card').each(function(index) {
@@ -575,9 +664,8 @@ if (!isset($_SESSION['username'])) {
         );
 
         $('#dataForm').submit(function(event) {
-            event.preventDefault(); // Menghentikan submit form default
+            event.preventDefault();
 
-            // Validasi input tanggal
             var dari = $('#dari').val();
             var sampai = $('#sampai').val();
 
@@ -601,7 +689,6 @@ if (!isset($_SESSION['username'])) {
                 return;
             }
 
-            // Tampilkan loading
             Swal.fire({
                 title: 'Menghitung EOQ...',
                 text: 'Mohon tunggu sebentar',
@@ -612,14 +699,13 @@ if (!isset($_SESSION['username'])) {
                 }
             });
 
-            // Mengirimkan permintaan AJAX
             $.ajax({
                 type: 'GET',
                 url: $(this).attr('action'),
                 data: $(this).serialize(),
                 dataType: 'json',
                 success: function(response) {
-                    Swal.close(); // Tutup loading
+                    Swal.close();
 
                     if (response.success === false) {
                         Swal.fire({
@@ -634,9 +720,16 @@ if (!isset($_SESSION['username'])) {
                     $("#result").show();
                     updateEOQTables(response);
 
-                    allProductData = response.data;
-                    allEoqData = response.data_eoq_all;
-                    allFrequencyData = response.data_frequency_all;
+                    // PERBAIKI: Render MathJax setelah content dimuat
+                    if (typeof MathJax !== 'undefined') {
+                        MathJax.typesetPromise();
+                    }
+
+                    window.allProductData = response.data;
+                    window.allEoqData = response.data_eoq_all;
+                    window.allFrequencyData = response.data_frequency_all;
+                    window.allSetupCostData = response.data_setup_cost_all;
+                    window.allTotalCostData = response.data_total_cost_all;
 
                     Swal.fire({
                         icon: "success",
@@ -647,26 +740,22 @@ if (!isset($_SESSION['username'])) {
                         confirmButtonColor: "#dc2626"
                     });
 
-                    // Smooth scroll to results
                     $('html, body').animate({
                         scrollTop: $("#result").offset().top - 100
                     }, 1000);
                 },
                 error: function(xhr, status, error) {
-                    Swal.close(); // Tutup loading
-
+                    Swal.close();
                     console.error('AJAX Error:', xhr.responseText);
 
                     let errorMessage = "Sepertinya terjadi kesalahan. Silakan coba lagi.";
 
-                    // Coba parse response untuk mendapatkan error message yang lebih spesifik
                     try {
                         let response = JSON.parse(xhr.responseText);
                         if (response.error) {
                             errorMessage = response.error;
                         }
                     } catch (e) {
-                        // Jika tidak bisa parse JSON, gunakan pesan default
                         console.error('JSON Parse Error:', e);
                     }
 
@@ -685,8 +774,14 @@ if (!isset($_SESSION['username'])) {
             var data_eoq_all = response.data_eoq_all;
             var data_frequency_all = response.data_frequency_all;
             var data_total_cost_all = response.data_total_cost_all;
+            var data_setup_cost_all = response.data_setup_cost_all;
 
-            //buat format rupiah
+            window.allProductData = data;
+            window.allEoqData = data_eoq_all;
+            window.allFrequencyData = data_frequency_all;
+            window.allTotalCostData = data_total_cost_all;
+            window.allSetupCostData = data_setup_cost_all;
+
             var formatter = new Intl.NumberFormat('id-ID', {
                 style: 'currency',
                 currency: 'IDR',
@@ -694,115 +789,162 @@ if (!isset($_SESSION['username'])) {
             });
 
             var allEoqTable = buildAllEoqTable(data, data_eoq_all, data_frequency_all, data_total_cost_all,
-                formatter);
+                data_setup_cost_all, formatter);
             $('#data-eoq-all').html(allEoqTable);
 
-            // Update summary statistics
-            updateSummaryStats(data, data_eoq_all, data_frequency_all, data_total_cost_all, formatter);
-
-            // Initialize DataTable
-            if (!$.fn.DataTable.isDataTable('#eoqAllTable')) {
-                $('#eoqAllTable').DataTable({
-                    "pageLength": 25,
-                    "lengthMenu": [
-                        [10, 25, 50, 100, -1],
-                        [10, 25, 50, 100, "Semua"]
-                    ],
-                    "language": {
-                        "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json"
-                    },
-                    "order": [
-                        [5, "desc"]
-                    ], // Sort by EOQ column
-                    "columnDefs": [{
-                            "orderable": false,
-                            "targets": 0
-                        } // Disable sorting for No column
-                    ]
-                });
+            // PERBAIKI: Destroy existing DataTable sebelum inisialisasi ulang
+            if ($.fn.DataTable.isDataTable('#eoqAllTable')) {
+                $('#eoqAllTable').DataTable().destroy();
             }
+
+            // PERBAIKI: Initialize DataTable dengan konfigurasi yang diperbaiki
+            $('#eoqAllTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [
+                    [5, 10, 25, 50, -1],
+                    [5, 10, 25, 50, "Semua"]
+                ],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Indonesian.json"
+                },
+                "order": [
+                    [5, "desc"]
+                ],
+                "columnDefs": [{
+                        "orderable": false,
+                        "targets": [0, 6]
+                    },
+                    {
+                        "width": "30px",
+                        "targets": 0
+                    },
+                    {
+                        "width": "250px",
+                        "targets": 1
+                    },
+                    {
+                        "width": "100px",
+                        "targets": 2
+                    },
+                    {
+                        "width": "120px",
+                        "targets": 3
+                    },
+                    {
+                        "width": "120px",
+                        "targets": 4
+                    },
+                    {
+                        "width": "120px",
+                        "targets": 5
+                    },
+                    {
+                        "width": "80px",
+                        "targets": 6
+                    }
+                ],
+                "autoWidth": false,
+                "responsive": false,
+                "scrollX": true,
+                "fixedColumns": {
+                    leftColumns: 1
+                }
+            });
         }
 
-        function buildAllEoqTable(data, data_eoq_all, data_frequency_all, data_total_cost_all, formatter) {
+        function buildAllEoqTable(data, data_eoq_all, data_frequency_all, data_total_cost_all,
+            data_setup_cost_all, formatter) {
             var html = '';
             $.each(data, function(index, item) {
                 var demand = Math.max(1, parseInt(item.stock_out) || 1);
-                var setupCost = 50000;
+                var setupCost = parseFloat(data_setup_cost_all[index]) || (item.harga * 0.12);
                 var holdingCost = Math.max(1000, parseInt(item.biaya_penyimpanan) || 1000);
                 var eoqValue = Math.max(1, parseInt(data_eoq_all[index]) || 1);
-                var frequency = Math.max(1, parseInt(data_frequency_all[index]) || 1);
-                var totalCostEOQ = parseFloat(data_total_cost_all[index]) || 0;
 
-                // Calculate interval days
-                var intervalDays = Math.round(365 / frequency);
-                if (!isFinite(intervalDays) || intervalDays <= 0) {
-                    intervalDays = Math.round(365 / 12); // Default to monthly
-                }
+                var productName = item.nama_produk;
 
                 html += `<tr>
-                    <td>${index + 1}</td>
-                    <td><span class="font-weight-bold">${item.nama_produk}</span></td>
-                    <td><span class="demand-value">${demand.toLocaleString('id-ID')} unit</span></td>
-                    <td><span class="cost-value">Rp 50.000</span></td>
-                    <td><span class="cost-value">${formatter.format(holdingCost)}</span></td>
-                    <td><span class="eoq-value-primary">${eoqValue.toLocaleString('id-ID')} unit</span></td>
-                    <td><span class="frequency-value">${frequency} kali</span></td>
-                    <td><span class="total-cost-value">${formatter.format(Math.round(totalCostEOQ))}</span></td>
-                    <td><span class="interval-value">${intervalDays} hari</span></td>
-                    <td><span class="sales-value">${formatter.format(item.pendapatan)}</span></td>
-                </tr>`;
+                <td class="text-center" style="width: 30px;"><strong>${index + 1}</strong></td>
+                <td class="text-left" style="width: 250px;">
+                    <span class="font-weight-bold" title="${item.nama_produk}">
+                        ${productName}
+                    </span>
+                </td>
+                <td class="text-center" style="width: 100px;">
+                    <span class="demand-value">
+                        ${demand.toLocaleString('id-ID')}
+                    </span>
+                </td>
+                <td class="text-center" style="width: 120px;">
+                    <span class="cost-value setup-cost">
+                        ${formatter.format(setupCost)}
+                        <small>(12%)</small>
+                    </span>
+                </td>
+                <td class="text-center" style="width: 120px;">
+                    <span class="cost-value">
+                        ${formatter.format(holdingCost)}
+                    </span>
+                </td>
+                <td class="text-center" style="width: 120px;">
+                    <span class="eoq-value-primary">
+                        ${eoqValue.toLocaleString('id-ID')}
+                    </span>
+                </td>
+                <td class="text-center" style="width: 80px;">
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="window.showProductDetail(${index})">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </td>
+            </tr>`;
             });
             return html;
         }
 
-        function updateSummaryStats(data, data_eoq_all, data_frequency_all, data_total_cost_all, formatter) {
-            var totalProducts = data.length;
-            var totalEoq = 0;
-            var totalFrequency = 0;
-            var totalCostEoq = 0;
+        // PERBAIKI: Function untuk menampilkan detail produk dalam modal
+        window.showProductDetail = function(index) {
+            if (!window.allProductData || !window.allEoqData || !window.allFrequencyData || !window
+                .allSetupCostData) {
+                return;
+            }
 
-            $.each(data_eoq_all, function(index, eoqValue) {
-                totalEoq += parseInt(eoqValue) || 0;
+            var item = window.allProductData[index];
+            var demand = Math.max(1, parseInt(item.stock_out) || 1);
+            var setupCost = parseFloat(window.allSetupCostData[index]) || (item.harga * 0.12);
+            var holdingCost = Math.max(1000, parseInt(item.biaya_penyimpanan) || 1000);
+            var eoqValue = Math.max(1, parseInt(window.allEoqData[index]) || 1);
+            var frequency = Math.max(1, parseInt(window.allFrequencyData[index]) || 1);
+            var totalCostEOQ = parseFloat(window.allTotalCostData[index]) || 0;
+            var intervalDays = Math.round(365 / frequency);
+
+            var formatter = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
             });
 
-            $.each(data_frequency_all, function(index, freqValue) {
-                totalFrequency += parseInt(freqValue) || 0;
-            });
+            // Populate modal data
+            $('#modal-product-name').text(item.nama_produk);
+            $('#modal-supplier').text(item.nama_sup);
+            $('#modal-product-price').text(formatter.format(item.harga));
 
-            $.each(data_total_cost_all, function(index, costValue) {
-                totalCostEoq += parseFloat(costValue) || 0;
-            });
+            $('#modal-demand').text(demand.toLocaleString('id-ID') + ' unit');
+            $('#modal-setup-cost').text(formatter.format(setupCost));
+            $('#modal-holding-cost').text(formatter.format(holdingCost));
 
-            var avgEoq = totalProducts > 0 ? Math.round(totalEoq / totalProducts) : 0;
+            $('#modal-eoq-optimal').text(eoqValue.toLocaleString('id-ID') + ' unit');
+            $('#modal-frequency').text(frequency + ' kali per tahun');
+            $('#modal-interval').text(intervalDays + ' hari');
 
-            $('#total-products').text(totalProducts + ' produk');
-            $('#avg-eoq').text(avgEoq.toLocaleString('id-ID') + ' unit');
-            $('#total-frequency').text(totalFrequency + ' kali/tahun');
-            $('#total-cost-eoq').text(formatter.format(totalCostEoq));
-        }
+            $('#modal-total-cost').text(formatter.format(Math.round(totalCostEOQ)));
+            $('#modal-sales-value').text(formatter.format(item.pendapatan));
 
-        function dataToSave(allProductData, allEoqData, allFrequencyData) {
-            var dataToSave = [];
-            $.each(allProductData, function(index, d) {
-                var intervalDays = Math.round(365 / (allFrequencyData[index] || 12));
-
-                dataToSave.push({
-                    'nama_produk': d.nama_produk,
-                    'demand_tahunan': d.stock_out,
-                    'biaya_pemesanan': 50000,
-                    'biaya_penyimpanan': d.biaya_penyimpanan,
-                    'eoq_optimal': allEoqData[index],
-                    'frekuensi_pesan': allFrequencyData[index],
-                    'interval_hari': intervalDays,
-                    'supplier': d.nama_sup,
-                    'nilai_penjualan': d.pendapatan
-                });
-            });
-            return dataToSave;
-        }
+            // PERBAIKI: Show modal dengan proper handling
+            $('#productDetailModal').modal('show');
+        };
 
         $('#btnPrint').click(function() {
-            if (!allProductData || !allEoqData || !allFrequencyData) {
+            if (!window.allProductData || !window.allEoqData || !window.allFrequencyData) {
                 Swal.fire({
                     icon: "warning",
                     title: "Peringatan",
@@ -812,15 +954,14 @@ if (!isset($_SESSION['username'])) {
                 return;
             }
 
-            var combinedData = dataToSave(allProductData, allEoqData, allFrequencyData);
+            var combinedData = dataToSave(window.allProductData, window.allEoqData, window
+                .allFrequencyData, window.allSetupCostData);
             var jsonString = JSON.stringify(combinedData);
             var encodedData = encodeURIComponent(jsonString);
 
-            // ubah format dari menjadi hari, bulan, dan tahun
             var dari = $('#dari').val();
             var sampai = $('#sampai').val();
 
-            // Show success message
             Swal.fire({
                 icon: "success",
                 title: "Laporan Sedang Disiapkan",
@@ -832,6 +973,28 @@ if (!isset($_SESSION['username'])) {
             window.open('../reports/export-eoq-pdf.php?data=' + encodedData + '&dari=' + dari +
                 '&sampai=' + sampai);
         });
+
+        function dataToSave(allProductData, allEoqData, allFrequencyData, allSetupCostData) {
+            var dataToSave = [];
+            $.each(allProductData, function(index, d) {
+                var intervalDays = Math.round(365 / (allFrequencyData[index] || 12));
+                var setupCost = allSetupCostData ? allSetupCostData[index] : (d.harga * 0.12);
+
+                dataToSave.push({
+                    'nama_produk': d.nama_produk,
+                    'demand_tahunan': d.stock_out,
+                    'biaya_pemesanan': setupCost,
+                    'biaya_penyimpanan': d.biaya_penyimpanan,
+                    'eoq_optimal': allEoqData[index],
+                    'frekuensi_pesan': allFrequencyData[index],
+                    'interval_hari': intervalDays,
+                    'supplier': d.nama_sup,
+                    'nilai_penjualan': d.pendapatan,
+                    'harga_produk': d.harga
+                });
+            });
+            return dataToSave;
+        }
     });
     </script>
 

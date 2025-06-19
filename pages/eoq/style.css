@@ -24,6 +24,193 @@ body {
   color: var(--wings-gray-800);
 }
 
+/* PERBAIKI: Modal Z-index dan backdrop issues */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1040;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+}
+
+.modal.show .modal-dialog {
+  transform: none !important;
+}
+
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 1rem;
+    min-height: calc(100% - 2rem);
+  }
+
+  .modal-dialog.modal-lg {
+    width: calc(100% - 2rem);
+    max-width: none;
+  }
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    margin: 1.75rem auto;
+    min-height: calc(100% - 3.5rem);
+  }
+
+  .modal-dialog.modal-lg {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 992px) {
+  .modal-dialog.modal-lg {
+    max-width: 900px;
+  }
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 1.75rem auto;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 3.5rem);
+}
+
+.modal-dialog.modal-lg {
+  max-width: 900px;
+  width: 90%;
+}
+
+/* PERBAIKI: Modal content styling */
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+  outline: 0;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
+  color: white;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--wings-gray-200);
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+/* TAMBAH: Math formula styling dengan MathJax */
+.eoq-formula-display {
+  background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+  border: 2px solid var(--wings-red);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.15);
+}
+
+.formula-title h5 {
+  color: var(--wings-red);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.math-formula-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1.5rem;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TAMBAH: MathJax specific styling */
+.MathJax {
+  outline: 0;
+  color: var(--wings-red) !important;
+}
+
+.MathJax_Display {
+  text-align: center !important;
+  margin: 1em 0 !important;
+}
+
+.formula-parameters {
+  background: var(--wings-gray-50);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.parameter-item {
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--wings-gray-700);
+  font-weight: 500;
+}
+
+/* PERBAIKI: Setup cost info yang disederhanakan */
+.setup-cost-info {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.setup-cost-info h6 {
+  color: #92400e;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.bg-warning-light {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+}
+
 /* Sidebar Styles */
 .sidebar {
   background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
@@ -282,109 +469,247 @@ label {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.eoq-formula-card,
-.eoq-benefits-card {
-  background: linear-gradient(
-    135deg,
-    var(--wings-gray-50) 0%,
-    var(--wings-white) 100%
-  );
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--wings-gray-200);
-  height: 100%;
-}
-
-.formula-display {
-  background: var(--wings-red);
-  color: white;
-  padding: 0.8rem;
-  border-radius: 6px;
-  font-family: "Courier New", monospace;
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-align: center;
-  margin: 0.5rem 0;
-}
-
-.benefits-list {
-  margin: 0;
-  padding-left: 1.2rem;
-}
-
-.benefits-list li {
-  margin-bottom: 0.3rem;
-  font-size: 0.9rem;
-}
-
-/* EOQ Primary Table */
+/* PERBAIKI: Table header dan body alignment */
 .eoq-primary-table {
-  border-radius: 10px;
+  table-layout: fixed;
+  width: 100%;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   background: var(--wings-white);
+  border: 1px solid #e5e7eb;
 }
 
 .eoq-primary-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
   color: white;
-  padding: 1.2rem 0.8rem;
+  padding: 1rem 0.8rem;
   font-weight: 700;
-}
-
-/* EOQ Summary Cards */
-.eoq-summary-cards {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 2px solid var(--wings-gray-200);
-}
-
-.summary-card {
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  text-align: center;
+  vertical-align: middle;
   border: none;
+  white-space: nowrap;
+}
+
+.eoq-primary-table tbody td {
+  padding: 1rem 0.8rem;
+  text-align: center;
+  vertical-align: middle;
+  border: none;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.85rem;
+  word-wrap: break-word;
+}
+
+/* PERBAIKI: Specific column widths untuk alignment yang konsisten */
+.eoq-primary-table thead th:nth-child(1),
+.eoq-primary-table tbody td:nth-child(1) {
+  width: 30px;
+  min-width: 30px;
+  max-width: 30px;
+}
+
+.eoq-primary-table thead th:nth-child(2),
+.eoq-primary-table tbody td:nth-child(2) {
+  width: 250px;
+  min-width: 250px;
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.eoq-primary-table thead th:nth-child(3),
+.eoq-primary-table tbody td:nth-child(3) {
+  width: 100px;
+  min-width: 100px;
+}
+
+.eoq-primary-table thead th:nth-child(4),
+.eoq-primary-table tbody td:nth-child(4) {
+  width: 120px;
+  min-width: 120px;
+}
+
+.eoq-primary-table thead th:nth-child(5),
+.eoq-primary-table tbody td:nth-child(5) {
+  width: 120px;
+  min-width: 120px;
+}
+
+.eoq-primary-table thead th:nth-child(6),
+.eoq-primary-table tbody td:nth-child(6) {
+  width: 120px;
+  min-width: 120px;
+}
+
+.eoq-primary-table thead th:nth-child(7),
+.eoq-primary-table tbody td:nth-child(7) {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+}
+
+.eoq-primary-table thead th i {
+  margin-right: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.eoq-primary-table tbody tr {
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.eoq-primary-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.eoq-primary-table tbody tr:hover {
+  transform: none;
+  background: #f9fafb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* PERBAIKI: DataTables styling improvements */
+.dataTables_wrapper {
+  font-size: 0.875rem;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
   margin-bottom: 1rem;
 }
 
-.summary-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+.dataTables_wrapper .dataTables_length select {
+  background-color: white;
+  border: 1px solid var(--wings-gray-300);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  width: auto;
+  display: inline-block;
 }
 
-.cost-savings {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+.dataTables_wrapper .dataTables_filter input {
+  background-color: white;
+  border: 1px solid var(--wings-gray-300);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  margin-left: 0.5rem;
+  width: 200px;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+  margin-top: 1rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  padding: 0.25rem 0.5rem;
+  margin: 0 0.125rem;
+  border: 1px solid var(--wings-gray-300);
+  border-radius: 4px;
+  background-color: white;
+  color: var(--wings-gray-700);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: var(--wings-red);
   color: white;
+  border-color: var(--wings-red);
 }
 
-.avg-eoq {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background-color: var(--wings-red);
   color: white;
+  border-color: var(--wings-red);
 }
 
-.total-frequency {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  color: white;
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+  background-color: var(--wings-gray-100);
+  color: var(--wings-gray-400);
+  border-color: var(--wings-gray-200);
+  cursor: not-allowed;
 }
 
-.working-capital {
-  background: linear-gradient(135deg, #d97706 0%, #c2410c 100%);
-  color: white;
+.dataTables_wrapper .dataTables_info {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--wings-gray-600);
 }
 
-.summary-card .card-body {
-  padding: 1.5rem;
+/* PERBAIKI: Modal styling untuk detail produk */
+.detail-card {
+  background: var(--wings-white);
+  border: 1px solid var(--wings-gray-200);
+  border-radius: 8px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  height: 90%;
 }
 
-.summary-card h6 {
+.detail-card h6 {
+  color: var(--wings-red);
   font-weight: 600;
   margin-bottom: 1rem;
-  opacity: 0.9;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--wings-gray-200);
+  font-size: 1rem;
 }
 
-.summary-card span {
-  font-size: 1.2rem;
-  font-weight: 700;
+.result-card {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-color: var(--wings-info);
+}
+
+.financial-card {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: var(--wings-success);
+}
+
+.table-borderless td {
+  border: none !important;
+  padding: 0.5rem 0;
+  vertical-align: top;
+}
+
+.table-borderless td:first-child {
+  width: 45%;
+  color: var(--wings-gray-700);
+  font-weight: 500;
+}
+
+.table-borderless td:last-child {
+  font-weight: 600;
+  color: var(--wings-gray-800);
+}
+
+/* PERBAIKI: Button styling */
+.btn-outline-primary.btn-sm {
+  border-color: var(--wings-red);
+  color: var(--wings-red);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  min-width: auto;
+  background-color: transparent;
+}
+
+.btn-outline-primary.btn-sm:hover {
+  background-color: var(--wings-red);
+  border-color: var(--wings-red);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
+}
+
+.btn-outline-primary.btn-sm:focus {
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
 }
 
 /* Implementation Guide */
@@ -446,103 +771,66 @@ label {
   font-size: 0.85rem;
 }
 
-/* Enhanced Value Badges */
+/* PERBAIKI: Enhanced value badges dengan styling yang konsisten */
+.demand-value,
+.cost-value,
 .eoq-value-primary {
-  color: var(--wings-red);
-  padding: 0.6rem 1.2rem;
-  border-radius: 25px;
-  font-weight: 800;
-  font-size: 1rem;
-  border: 2px solid var(--wings-red);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border-radius: 4px;
   display: inline-block;
-  min-width: 80px;
+  min-width: 70px;
   text-align: center;
-  background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
 }
 
 .demand-value {
   color: var(--wings-info);
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  border: 1px solid var(--wings-info);
+  background: #f0f9ff;
+  border: 1px solid #0284c7;
 }
 
 .cost-value {
   color: var(--wings-secondary);
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border: 1px solid var(--wings-secondary);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
 }
 
-.total-cost-value {
-  color: #7c3aed;
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-  border: 1px solid #7c3aed;
+.eoq-value-primary {
+  color: var(--wings-red);
+  border: 1px solid var(--wings-red);
+  background: #fff5f5;
+  font-weight: 700;
 }
 
-.interval-value {
+.cost-value small {
+  display: block;
+  font-size: 0.65rem;
+  margin-top: 0.1rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.cost-value.setup-cost {
   color: var(--wings-warning);
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-weight: 600;
+  background: #fffbeb;
+  border: 1px solid #fed7aa;
+  font-weight: 700;
+}
+
+.cost-value.setup-cost small {
+  color: #92400e;
+  font-weight: 500;
+}
+
+/* Product name styling */
+.eoq-primary-table tbody td:nth-child(2) .font-weight-bold {
+  color: var(--wings-gray-800);
   font-size: 0.85rem;
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-  border: 1px solid var(--wings-warning);
-}
-
-.frequency-value {
-  color: var(--wings-success);
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
   font-weight: 600;
-  font-size: 0.85rem;
-  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  border: 1px solid var(--wings-success);
-}
-
-.sales-value {
-  color: #059669;
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-  border: 1px solid #059669;
-}
-
-/* DataTable Styling */
-.dataTables_wrapper .dataTables_length select,
-.dataTables_wrapper .dataTables_filter input {
-  border: 2px solid var(--wings-gray-200);
-  border-radius: 6px;
-  padding: 0.5rem;
-}
-
-.dataTables_wrapper .dataTables_filter input:focus {
-  border-color: var(--wings-red);
-  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-  background: var(--wings-red) !important;
-  border-color: var(--wings-red) !important;
-  color: white !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  background: var(--wings-gray-100) !important;
-  border-color: var(--wings-gray-300) !important;
+  line-height: 1.3;
+  display: block;
 }
 
 /* Action Buttons */
@@ -555,19 +843,6 @@ label {
 .action-buttons .btn {
   margin: 0 0.5rem;
   min-width: 150px;
-}
-
-/* Modal Styles */
-.modal-header {
-  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
-  border-radius: 12px 12px 0 0;
-  border-bottom: none;
-}
-
-.modal-content {
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* Topbar */
@@ -669,69 +944,172 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: auto;
 }
 
-/* Responsive Design */
+/* PERBAIKI: Responsive design improvements */
 @media (max-width: 1200px) {
-  .eoq-primary .section-header h4 {
-    font-size: 1.3rem;
+  .math-formula-container {
+    font-size: 1.2rem;
+    padding: 1.5rem;
   }
 
-  .formula-display {
-    font-size: 1rem;
+  .eoq-primary-table thead th,
+  .eoq-primary-table tbody td {
+    padding: 0.8rem 0.6rem;
+    font-size: 0.8rem;
   }
 
-  .summary-card span {
-    font-size: 1.1rem;
-  }
-}
-
-@media (max-width: 992px) {
-  .eoq-description .row {
-    flex-direction: column;
+  .eoq-primary-table thead th:nth-child(2),
+  .eoq-primary-table tbody td:nth-child(2) {
+    width: 200px;
+    min-width: 200px;
   }
 
-  .eoq-formula-card,
-  .eoq-benefits-card {
-    margin-bottom: 1rem;
+  .modal-dialog.modal-lg {
+    max-width: 95%;
   }
 }
 
 @media (max-width: 768px) {
-  .eoq-summary-cards .row {
-    flex-direction: column;
+  .modal-dialog.modal-lg {
+    max-width: 95%;
+    margin: 1rem auto;
   }
 
-  .summary-card {
-    margin-bottom: 1rem;
-  }
-
-  .implementation-card,
-  .monitoring-card {
-    margin-bottom: 1rem;
-  }
-
-  .kpi-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .kpi-target {
-    margin-top: 0.3rem;
-  }
-
-  .welcome-text {
-    padding: 1.5rem;
-  }
-
-  .welcome-text h4 {
-    font-size: 1.5rem;
-  }
-
-  .analysis-section {
+  .math-formula-container {
+    font-size: 1rem;
     padding: 1rem;
+  }
+
+  .eoq-primary-table {
+    font-size: 0.75rem;
+  }
+
+  .eoq-primary-table thead th:nth-child(2),
+  .eoq-primary-table tbody td:nth-child(2) {
+    width: 150px;
+    min-width: 150px;
+  }
+
+  .detail-card {
+    margin-bottom: 0.8rem;
+    padding: 1rem;
+  }
+
+  .table-borderless td:first-child {
+    width: 50%;
+    font-size: 0.85rem;
+  }
+
+  .table-borderless td:last-child {
+    font-size: 0.85rem;
+  }
+
+  .eoq-primary-table thead th:first-child,
+  .eoq-primary-table tbody td:first-child {
+    width: 25px !important;
+    min-width: 25px !important;
+    padding: 0.6rem 0.2rem;
+  }
+
+  .eoq-primary-table thead th:last-child,
+  .eoq-primary-table tbody td:last-child {
+    width: 60px !important;
+    min-width: 60px !important;
+    padding: 0.6rem 0.2rem;
+  }
+
+  .btn-outline-primary.btn-sm {
+    padding: 0.15rem 0.3rem;
+    font-size: 0.65rem;
+  }
+
+  .btn-outline-primary.btn-sm i {
+    font-size: 0.7rem;
+  }
+
+  .dataTables_wrapper .dataTables_filter input {
+    width: 150px;
   }
 }
 
 @media (max-width: 576px) {
+  .eoq-formula-display {
+    margin: 1rem -15px;
+    border-radius: 0;
+    padding: 1.5rem 1rem;
+  }
+
+  .math-formula-container {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+
+  .eoq-primary-table thead th,
+  .eoq-primary-table tbody td {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.7rem;
+  }
+
+  .eoq-primary-table thead th:nth-child(1),
+  .eoq-primary-table tbody td:nth-child(1) {
+    width: 25px;
+    min-width: 25px;
+  }
+
+  .eoq-primary-table thead th:nth-child(2),
+  .eoq-primary-table tbody td:nth-child(2) {
+    width: 120px;
+    min-width: 120px;
+    text-align: center;
+    padding-left: 0.3rem;
+  }
+
+  .eoq-primary-table thead th:nth-child(7),
+  .eoq-primary-table tbody td:nth-child(7) {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  .btn-outline-primary.btn-sm {
+    padding: 0.15rem 0.3rem;
+    font-size: 0.65rem;
+  }
+
+  .demand-value,
+  .cost-value,
+  .eoq-value-primary {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+    min-width: 50px;
+  }
+
+  .cost-value small {
+    font-size: 0.55rem;
+  }
+
+  .table-responsive {
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: white;
+    padding: 0;
+  }
+
+  .analysis-section {
+    margin-left: -15px;
+    margin-right: -15px;
+    border-radius: 0;
+  }
+
+  .section-header h4,
+  .section-header h5 {
+    font-size: 1.1rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.8rem;
+  }
+
   .welcome-text {
     padding: 1rem;
   }
@@ -763,35 +1141,60 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin: 0.5rem 0;
   }
 
-  .table-responsive {
-    font-size: 0.85rem;
+  .dataTables_wrapper .dataTables_filter input {
+    width: 120px;
+    margin-left: 0.25rem;
   }
 
-  .eoq-value-primary,
-  .demand-value,
-  .cost-value,
-  .total-cost-value,
-  .interval-value,
-  .frequency-value,
-  .sales-value {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.5rem;
+  .dataTables_wrapper .dataTables_length select {
+    padding: 0.15rem 0.3rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* PERBAIKI: Responsive design untuk Implementation Guide */
+@media (max-width: 992px) {
+  .eoq-description .row {
+    flex-direction: column;
+  }
+
+  .implementation-card,
+  .monitoring-card {
+    margin-bottom: 1rem;
+  }
+
+  .kpi-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .kpi-target {
+    margin-top: 0.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-text {
+    padding: 1.5rem;
+  }
+
+  .welcome-text h4 {
+    font-size: 1.5rem;
   }
 
   .analysis-section {
-    margin-left: -15px;
-    margin-right: -15px;
-    border-radius: 0;
+    padding: 1rem;
   }
 
-  .section-header h4,
-  .section-header h5 {
-    font-size: 1.1rem;
+  .implementation-steps li {
+    font-size: 0.85rem;
   }
 
-  .table th,
-  .table td {
-    padding: 0.5rem 0.25rem;
+  .kpi-name {
+    font-size: 0.85rem;
+  }
+
+  .kpi-target {
     font-size: 0.8rem;
   }
 }
@@ -819,13 +1222,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   .welcome-text {
     background: var(--wings-gray-100) !important;
     color: var(--wings-gray-800) !important;
-    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .table th {
     background: var(--wings-gray-200) !important;
     color: var(--wings-gray-800) !important;
-    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .analysis-section {
@@ -835,6 +1238,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
   .table {
     font-size: 12px;
+  }
+
+  .setup-cost-info {
+    background: #fef3c7 !important;
+    print-color-adjust: exact;
   }
 }
 
@@ -862,7 +1270,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background: #b91c1c;
 }
 
-/* Additional utility classes */
+/* PERBAIKI: Additional utility classes */
 .text-muted {
   color: var(--wings-gray-600) !important;
 }
@@ -891,28 +1299,134 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-right: 1rem;
 }
 
-/* EOQ Calculation Highlight */
-.eoq-calculation-info {
-  background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
-  border: 2px solid #f59e0b;
-  border-radius: 10px;
+/* PERBAIKI: Bootstrap modal override untuk mengatasi masalah tampil gonta-ganti */
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translateY(-50px);
+}
+
+.modal.show .modal-dialog {
+  transform: none;
+}
+
+.modal.fade.show {
+  opacity: 1;
+}
+
+.modal.fade {
+  opacity: 0;
+  transition: opacity 0.15s linear;
+}
+
+/* PERBAIKI: Prevent modal backdrop issues */
+.modal-backdrop.fade {
+  opacity: 0;
+}
+
+.modal-backdrop.show {
+  opacity: 0.5;
+}
+
+/* PERBAIKI: Ensure modal is always visible when shown */
+.modal.show {
+  display: block !important;
+}
+
+/* PERBAIKI: Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* PERBAIKI: Modal close button styling */
+.modal-header .close {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: white;
+  text-shadow: none;
+  opacity: 1;
+}
+
+.modal-header .close:hover {
+  opacity: 0.8;
+}
+
+/* PERBAIKI: Prevent layout shift when DataTable loads */
+.eoq-primary-table.dataTable {
+  width: 100% !important;
+}
+
+.dataTables_wrapper .eoq-primary-table {
+  margin: 0 !important;
+}
+
+/* PERBAIKI: DataTable responsive fixes */
+.dataTables_scrollHead,
+.dataTables_scrollBody {
+  overflow: visible !important;
+}
+
+.dataTables_scrollHeadInner {
+  width: 100% !important;
+}
+
+.dataTables_scrollHeadInner table {
+  width: 100% !important;
+}
+
+/* PERBAIKI: Ensure table cells maintain proper width */
+.eoq-primary-table.dataTable thead th,
+.eoq-primary-table.dataTable tbody td {
+  box-sizing: border-box;
+}
+
+/* PERBAIKI: Loading state untuk DataTable */
+.dataTables_processing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  margin-left: -100px;
+  margin-top: -26px;
+  text-align: center;
   padding: 1rem;
-  margin: 1rem 0;
+  background-color: white;
+  border: 1px solid var(--wings-gray-300);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
 }
 
-.calculation-step {
-  background: var(--wings-white);
-  border-radius: 6px;
-  padding: 0.8rem;
-  margin: 0.5rem 0;
-  border-left: 4px solid var(--wings-info);
+/* PERBAIKI: Fix untuk browser compatibility */
+.eoq-primary-table {
+  -webkit-border-horizontal-spacing: 0;
+  -webkit-border-vertical-spacing: 0;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
-.formula-step {
-  font-family: "Courier New", monospace;
-  background: #f8fafc;
-  padding: 0.5rem;
-  border-radius: 4px;
-  margin: 0.3rem 0;
-  font-weight: bold;
+/* PERBAIKI: Smooth transitions untuk semua elemen interaktif */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* PERBAIKI: Ensure proper font rendering */
+body,
+.modal,
+.table,
+.btn {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
