@@ -1,0 +1,734 @@
+:root {
+  --wings-primary: #dc2626;
+  --wings-secondary: #64748b;
+  --wings-success: #059669;
+  --wings-warning: #d97706;
+  --wings-danger: #dc2626;
+  --wings-info: #0284c7;
+  --wings-gray-50: #f8fafc;
+  --wings-gray-100: #f1f5f9;
+  --wings-gray-200: #e2e8f0;
+  --wings-gray-300: #cbd5e1;
+  --wings-gray-600: #475569;
+  --wings-gray-700: #334155;
+  --wings-gray-800: #1e293b;
+  --wings-gray-900: #0f172a;
+  --wings-red: #dc2626;
+  --wings-white: #ffffff;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  background-color: var(--wings-gray-50);
+  color: var(--wings-gray-800);
+}
+
+/* Sidebar Styles */
+.sidebar {
+  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
+}
+
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.sidebar .nav-link:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin: 0 10px;
+}
+
+.sidebar .nav-link.active {
+  color: white !important;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  margin: 0 10px;
+}
+
+.sidebar-brand {
+  padding: 1.5rem 1rem;
+}
+
+.sidebar-divider {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-heading {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.collapse-header {
+  color: var(--wings-gray-600) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.collapse-item {
+  color: var(--wings-gray-700) !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.collapse-item:hover {
+  color: var(--wings-red) !important;
+  background-color: var(--wings-gray-50);
+  transform: translateX(5px);
+}
+
+.collapse-item.active {
+  color: var(--wings-red) !important;
+  background-color: var(--wings-gray-100);
+  font-weight: 600;
+}
+
+/* Card Styles */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
+  color: white;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 1.25rem 1.5rem;
+}
+
+.card-stats {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Welcome Banner */
+.welcome-text {
+  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.btn-secondary {
+  background-color: var(--wings-secondary);
+  border-color: var(--wings-secondary);
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.btn-success {
+  background-color: var(--wings-success);
+  border-color: var(--wings-success);
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.btn-icon-split .icon {
+  border-radius: 8px 0 0 8px;
+}
+
+.btn-icon-split .text {
+  border-radius: 0 8px 8px 0;
+}
+
+/* Table Styles */
+.table th {
+  background-color: var(--wings-gray-100);
+  border: none;
+  font-weight: 600;
+  color: var(--wings-gray-800);
+  padding: 1rem 0.75rem;
+}
+
+.table td {
+  border: none;
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--wings-gray-200);
+  transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: var(--wings-gray-50);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Stock Badge Styles */
+.stock-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.stock-low {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.stock-medium {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.stock-high {
+  background-color: #dcfce7;
+  color: #059669;
+}
+
+/* Code Styling */
+code {
+  background-color: var(--wings-gray-100);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+/* Modal Styles */
+.modal-header {
+  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
+  border-radius: 12px 12px 0 0;
+  border-bottom: none;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Topbar */
+.topbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Color Overrides */
+.text-primary {
+  color: var(--wings-red) !important;
+}
+
+.bg-primary {
+  background: linear-gradient(
+    135deg,
+    var(--wings-red) 0%,
+    #b91c1c 100%
+  ) !important;
+}
+
+.border-left-primary {
+  border-left: 4px solid var(--wings-red) !important;
+}
+
+.bg-danger {
+  background-color: var(--wings-danger) !important;
+}
+
+/* Badge Styles */
+.badge {
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.badge-light {
+  background-color: var(--wings-gray-100);
+  color: var(--wings-gray-700);
+}
+
+/* Export Buttons */
+.export-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .export-buttons {
+    flex-direction: column;
+  }
+
+  .export-buttons .btn {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* DataTables Customization */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+  border: 2px solid var(--wings-gray-200);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: var(--wings-red) !important;
+  border: 1px solid var(--wings-red) !important;
+  border-radius: 6px;
+  color: white !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--wings-gray-100) !important;
+  border: 1px solid var(--wings-gray-200) !important;
+  color: var(--wings-red) !important;
+}
+
+.dataTables_wrapper .dataTables_info {
+  color: var(--wings-gray-600);
+  font-weight: 500;
+}
+
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label {
+  color: var(--wings-gray-700);
+  font-weight: 500;
+}
+
+/* Summary Cards Styles */
+.border-left-success {
+  border-left: 4px solid var(--wings-success) !important;
+}
+
+.border-left-warning {
+  border-left: 4px solid var(--wings-warning) !important;
+}
+
+.border-left-info {
+  border-left: 4px solid var(--wings-info) !important;
+}
+
+.text-success {
+  color: var(--wings-success) !important;
+}
+
+.text-warning {
+  color: var(--wings-warning) !important;
+}
+
+.text-info {
+  color: var(--wings-info) !important;
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Enhanced hover effects */
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Focus states */
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* Print styles */
+@media print {
+  .sidebar,
+  .topbar,
+  .btn,
+  .modal,
+  .export-buttons {
+    display: none !important;
+  }
+
+  .content-wrapper {
+    margin-left: 0 !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #dee2e6 !important;
+  }
+
+  .welcome-text {
+    background: var(--wings-gray-100) !important;
+    color: var(--wings-gray-800) !important;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .table th {
+    background-color: var(--wings-gray-100) !important;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .welcome-text {
+    padding: 1.5rem;
+  }
+
+  .welcome-text h4 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-text {
+    padding: 1rem;
+  }
+
+  .welcome-text .d-flex {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card-header .d-flex {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .export-buttons {
+    justify-content: center;
+  }
+}
+
+/* DataTable Buttons Styling */
+.dt-buttons {
+  margin-bottom: 1rem;
+}
+
+.dt-button {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Additional styling for filter and detail sections */
+
+/* Filter Section */
+.filter-section {
+  background: linear-gradient(
+    135deg,
+    var(--wings-gray-50) 0%,
+    var(--wings-gray-100) 100%
+  );
+  border: 1px solid var(--wings-gray-200);
+  border-radius: 10px;
+}
+
+.filter-buttons {
+  gap: 0.5rem;
+}
+
+.filter-buttons .btn {
+  min-width: 100px;
+}
+
+/* Export Section */
+.export-section {
+  border-top: 1px solid var(--wings-gray-200);
+  padding-top: 1rem;
+}
+
+/* Detail Modal Enhancements */
+.detail-info-table td {
+  padding: 0.5rem 0.75rem;
+  border: none;
+  vertical-align: middle;
+}
+
+.detail-info-table td:first-child {
+  background-color: var(--wings-gray-50);
+  width: 40%;
+  border-radius: 6px 0 0 6px;
+}
+
+.detail-info-table td:nth-child(2) {
+  width: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: var(--wings-gray-600);
+}
+
+.detail-info-table td:last-child {
+  background-color: var(--wings-white);
+  border-radius: 0 6px 6px 0;
+}
+
+.detail-items-table {
+  margin-top: 1rem;
+}
+
+.detail-items-table thead th {
+  background: linear-gradient(135deg, var(--wings-red) 0%, #b91c1c 100%);
+  color: white;
+  border: none;
+  font-weight: 600;
+  text-align: center;
+}
+
+.detail-items-table tbody td {
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--wings-gray-200);
+}
+
+.total-row {
+  background: linear-gradient(
+    135deg,
+    var(--wings-gray-100) 0%,
+    var(--wings-gray-200) 100%
+  );
+}
+
+.total-row td {
+  font-size: 1.1rem;
+  padding: 1rem 0.75rem;
+  border-top: 2px solid var(--wings-red);
+}
+
+/* Form Controls Enhancement */
+.form-control {
+  border: 2px solid var(--wings-gray-200);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: var(--wings-red);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* Label styling */
+.form-label,
+label {
+  color: var(--wings-gray-700);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Loading states */
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Enhanced modal styling */
+.modal-xl {
+  max-width: 1200px;
+}
+
+.modal-lg {
+  max-width: 900px;
+}
+
+/* Code enhancement for transaction codes */
+code.text-primary {
+  background: linear-gradient(
+    135deg,
+    rgba(220, 38, 38, 0.1) 0%,
+    rgba(220, 38, 38, 0.05) 100%
+  );
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  color: var(--wings-red);
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+/* Enhanced table hover effects */
+.table-hover tbody tr:hover {
+  background: linear-gradient(
+    135deg,
+    var(--wings-gray-50) 0%,
+    rgba(220, 38, 38, 0.02) 100%
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Button group styling */
+.btn-group .btn {
+  margin-right: 0;
+}
+
+/* Date input styling */
+input[type="date"] {
+  position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: var(--wings-red);
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+/* Enhanced responsive design */
+@media (max-width: 576px) {
+  .filter-section {
+    padding: 1rem;
+  }
+
+  .filter-buttons {
+    flex-direction: column;
+  }
+
+  .filter-buttons .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+  }
+
+  .export-buttons .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .detail-info-table td:first-child {
+    width: 100%;
+  }
+
+  .detail-info-table td:nth-child(2),
+  .detail-info-table td:last-child {
+    display: none;
+  }
+
+  .detail-info-table tr {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .detail-info-table td {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Print enhancements */
+@media print {
+  .filter-section,
+  .export-section,
+  .btn,
+  .modal {
+    display: none !important;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .welcome-text h4 {
+    color: var(--wings-gray-800) !important;
+  }
+
+  .card-header {
+    background: var(--wings-gray-200) !important;
+    color: var(--wings-gray-800) !important;
+  }
+}
+
+/* Animation enhancements */
+.card-stats {
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 60px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Scrollbar styling for modal */
+.modal-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--wings-red) var(--wings-gray-100);
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: var(--wings-gray-100);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--wings-red);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #b91c1c;
+}
+
+/* Gap utility for flexbox */
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 1rem;
+}
