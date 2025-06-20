@@ -1,3 +1,4 @@
+<!-- pages/pembelian/index.php   -->
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
@@ -35,7 +36,7 @@ if (!isset($_SESSION['username'])) {
     <link href="../../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
     <!-- Wings Theme CSS -->
-    <link rel="stylesheet" href="style-index.css">
+    <link rel="stylesheet" href="<?php echo ($_SESSION['role'] == 1) ? '../karyawan/style.css' : 'style-index.css'; ?>">
 
 </head>
 
@@ -45,10 +46,12 @@ if (!isset($_SESSION['username'])) {
     <div id="wrapper">
 
         <!-- Sidebar -->
+        <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../admin/dashboard.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center"
+                href="<?php echo ($_SESSION['role'] == 1) ? '../karyawan/dashboard.php' : '../admin/dashboard.php'; ?>">
                 <div class="sidebar-brand-icon">
                     <img src="../../logo.svg" alt="Logo" style="width: 100px; height: auto;">
                 </div>
@@ -59,7 +62,8 @@ if (!isset($_SESSION['username'])) {
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="../admin/dashboard.php">
+                <a class="nav-link"
+                    href="<?php echo ($_SESSION['role'] == 1) ? '../karyawan/dashboard.php' : '../admin/dashboard.php'; ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -67,6 +71,7 @@ if (!isset($_SESSION['username'])) {
             <!-- Divider -->
             <hr class="sidebar-divider">
 
+            <?php if ($_SESSION['role'] != 1): ?>
             <!-- Heading -->
             <div class="sidebar-heading">
                 Master Data
@@ -100,6 +105,7 @@ if (!isset($_SESSION['username'])) {
 
             <!-- Divider -->
             <hr class="sidebar-divider">
+            <?php endif; ?>
 
             <!-- Heading -->
             <div class="sidebar-heading">
@@ -137,9 +143,11 @@ if (!isset($_SESSION['username'])) {
                 <div id="report" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Jenis Laporan:</h6>
+                        <?php if ($_SESSION['role'] != 1): ?>
                         <a class="collapse-item" href="../laporan/laporan_produk.php">
                             <i class="fas fa-pills me-2"></i> Laporan Produk
                         </a>
+                        <?php endif; ?>
                         <a class="collapse-item" href="../laporan/laporan_pembelian.php">
                             <i class="fas fa-shopping-bag me-2"></i> Laporan Pembelian
                         </a>
@@ -150,6 +158,7 @@ if (!isset($_SESSION['username'])) {
                 </div>
             </li>
 
+            <?php if ($_SESSION['role'] != 1): ?>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -163,6 +172,7 @@ if (!isset($_SESSION['username'])) {
                     <i class="fas fa-fw fa-calculator"></i>
                     <span>Economic Order Quantity</span></a>
             </li>
+            <?php endif; ?>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

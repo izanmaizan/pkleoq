@@ -419,53 +419,6 @@ if (!isset($_SESSION['username'])) {
                         </div>
                     </div>
 
-                    <!-- Quick Actions -->
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">
-                                        <i class="fas fa-bolt me-2"></i>Aksi Cepat
-                                    </h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-3 mb-3">
-                                            <a href="../pembelian/index.php" class="btn btn-info btn-block">
-                                                <i class="fas fa-shopping-cart fa-2x mb-2 d-block"></i>
-                                                <strong>Kelola Pembelian</strong>
-                                                <p class="small mb-0">Input dan kelola data pembelian</p>
-                                            </a>
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <a href="../penjualan/index.php" class="btn btn-warning btn-block">
-                                                <i class="fas fa-cash-register fa-2x mb-2 d-block"></i>
-                                                <strong>Kelola Penjualan</strong>
-                                                <p class="small mb-0">Input dan kelola data penjualan</p>
-                                            </a>
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <a href="../laporan/laporan_pembelian.php"
-                                                class="btn btn-success btn-block">
-                                                <i class="fas fa-file-alt fa-2x mb-2 d-block"></i>
-                                                <strong>Laporan Pembelian</strong>
-                                                <p class="small mb-0">Lihat laporan pembelian</p>
-                                            </a>
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <a href="../laporan/laporan_penjualan.php"
-                                                class="btn btn-primary btn-block">
-                                                <i class="fas fa-chart-bar fa-2x mb-2 d-block"></i>
-                                                <strong>Laporan Penjualan</strong>
-                                                <p class="small mb-0">Lihat laporan penjualan</p>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
