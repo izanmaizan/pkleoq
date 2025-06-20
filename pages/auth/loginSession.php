@@ -31,28 +31,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user = mysqli_fetch_assoc($result);
             // Set session variables
             $_SESSION["username"] = $username;
-            $_SESSION["name"] = $user["nama"];
+            $_SESSION["nama"] = $user["nama"]; // Perbaikan: gunakan "nama" bukan "name"
             $_SESSION["id"] = $user["id"];
             $_SESSION["role"] = $user["role_id"];
 
-            // Check if user is admin
+            // Check if user is karyawan (role_id == 1)
             if ($user["role_id"] == 1) {
-            // Redirect to kepala sekolah dashboard
-                header("Location: ../apoteker/dashboard.php");
+                // Redirect to karyawan dashboard
+                header("Location: ../karyawan/dashboard.php");
                 exit(); // exit script after redirection
             }
-            // Redirect to dashboard
+            // Redirect to admin dashboard (role_id == 2 or other)
             header("Location: ../admin/dashboard.php");
             exit(); // exit script after redirection
         } else {
             // Invalid credentials, redirect back to login page
-            $_SESSION["error"] = "Terjadi kesalahan. Silahkan coba lagi.";
+            $_SESSION["error"] = "Username atau password salah. Silahkan coba lagi.";
             header("Location: ../../index.php");
             exit(); // exit script after redirection
         }
 
         // Close result set
         mysqli_stmt_close($stmt);
+    } else {
+        // Database error
+        $_SESSION["error"] = "Terjadi kesalahan sistem. Silahkan coba lagi.";
+        header("Location: ../../index.php");
+        exit();
     }
 }
 

@@ -454,6 +454,191 @@ if (!isset($_SESSION['username'])) {
                     </div>
                     <!-- End of Content -->
 
+                    <!-- Riwayat Perhitungan EOQ Section -->
+                    <div class="card card-stats">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold">
+                                    <i class="fas fa-history me-2"></i> Riwayat Perhitungan EOQ
+                                </h6>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge badge-info mr-2">
+                                        <i class="fas fa-clock me-1"></i> <span id="total-riwayat">0</span> Perhitungan
+                                    </span>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" id="refresh-riwayat">
+                                        <i class="fas fa-sync-alt"></i> Refresh
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Filter Section -->
+                            <div class="filter-section mb-4 p-3 bg-light rounded">
+                                <div class="row align-items-end">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="filter-dari" class="font-weight-bold">
+                                                <i class="fas fa-calendar-alt me-1"></i> Filter Dari
+                                            </label>
+                                            <input type="date" class="form-control form-control-sm" id="filter-dari">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="filter-sampai" class="font-weight-bold">
+                                                <i class="fas fa-calendar-alt me-1"></i> Filter Sampai
+                                            </label>
+                                            <input type="date" class="form-control form-control-sm" id="filter-sampai">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="filter-limit" class="font-weight-bold">
+                                                <i class="fas fa-list me-1"></i> Tampilkan
+                                            </label>
+                                            <select class="form-control form-control-sm" id="filter-limit">
+                                                <option value="10">10 Data Terakhir</option>
+                                                <option value="25">25 Data Terakhir</option>
+                                                <option value="50">50 Data Terakhir</option>
+                                                <option value="100">100 Data Terakhir</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary btn-sm" id="filter-riwayat">
+                                                <i class="fas fa-search me-1"></i> Filter
+                                            </button>
+                                            <button type="button" class="btn btn-secondary btn-sm ml-2"
+                                                id="reset-filter">
+                                                <i class="fas fa-undo me-1"></i> Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Riwayat Table -->
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="riwayat-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px;"><i class="fas fa-hashtag me-1"></i>No</th>
+                                            <th style="width: 150px;"><i class="fas fa-calendar me-1"></i>Tanggal
+                                                Perhitungan</th>
+                                            <th style="width: 120px;"><i class="fas fa-calendar-week me-1"></i>Periode
+                                                Data</th>
+                                            <th style="width: 80px;"><i class="fas fa-box me-1"></i>Total Produk</th>
+                                            <th style="width: 100px;"><i class="fas fa-chart-bar me-1"></i>Total Demand
+                                            </th>
+                                            <th style="width: 100px;"><i class="fas fa-calculator me-1"></i>Avg EOQ</th>
+                                            <th style="width: 120px;"><i class="fas fa-money-bill-wave me-1"></i>Total
+                                                Cost</th>
+                                            <th style="width: 80px;"><i class="fas fa-user me-1"></i>User</th>
+                                            <th style="width: 120px;"><i class="fas fa-cogs me-1"></i>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="riwayat-tbody">
+                                        <tr>
+                                            <td colspan="9" class="text-center py-4">
+                                                <div class="loading-spinner">
+                                                    <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                                                    <p class="mt-2 text-muted">Memuat data riwayat...</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div class="pagination-info">
+                                    <small class="text-muted">
+                                        Menampilkan <span id="showing-from">0</span> - <span id="showing-to">0</span>
+                                        dari <span id="total-records">0</span> data
+                                    </small>
+                                </div>
+                                <nav aria-label="Riwayat pagination">
+                                    <ul class="pagination pagination-sm mb-0" id="riwayat-pagination">
+                                        <!-- Pagination akan diisi oleh JavaScript -->
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Detail Riwayat -->
+                    <div class="modal fade" id="modalDetailRiwayat" tabindex="-1" role="dialog"
+                        aria-labelledby="modalDetailRiwayatLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="modalDetailRiwayatLabel">
+                                        <i class="fas fa-info-circle me-2"></i>Detail Riwayat Perhitungan EOQ
+                                    </h5>
+                                    <button type="button" class="close text-white" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="modal-detail-content">
+                                    <!-- Content akan diisi oleh JavaScript -->
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                                        <p class="mt-2 text-muted">Memuat detail...</p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        <i class="fas fa-times me-1"></i> Tutup
+                                    </button>
+                                    <button type="button" class="btn btn-primary" id="print-detail">
+                                        <i class="fas fa-print me-1"></i> Cetak Detail
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Konfirmasi Hapus -->
+                    <div class="modal fade" id="modalHapusRiwayat" tabindex="-1" role="dialog"
+                        aria-labelledby="modalHapusRiwayatLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title" id="modalHapusRiwayatLabel">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Hapus
+                                    </h5>
+                                    <button type="button" class="close text-white" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="text-center mb-3">
+                                        <i class="fas fa-question-circle fa-3x text-warning"></i>
+                                    </div>
+                                    <p class="text-center">Apakah Anda yakin ingin menghapus riwayat perhitungan ini?
+                                    </p>
+                                    <p class="text-center text-muted small">Data yang sudah dihapus tidak dapat
+                                        dikembalikan.</p>
+                                    <div id="hapus-detail-info" class="alert alert-info">
+                                        <!-- Info riwayat yang akan dihapus -->
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        <i class="fas fa-times me-1"></i> Batal
+                                    </button>
+                                    <button type="button" class="btn btn-danger" id="konfirmasi-hapus">
+                                        <i class="fas fa-trash me-1"></i> Ya, Hapus
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- /.container-fluid -->
 
@@ -532,14 +717,16 @@ if (!isset($_SESSION['username'])) {
     <!-- Script untuk fungsi EOQ -->
     <script>
     // Script untuk fungsi EOQ dengan Accordion Animation System
-    $(document).ready(function() {
-        // Global variables
-        window.allProductData = null;
-        window.allEoqData = null;
-        window.allFrequencyData = null;
-        window.allSetupCostData = null;
-        window.allTotalCostData = null;
+    // Global variables
+    window.currentPage = 1;
+    window.currentRiwayatId = null;
+    window.allProductData = null;
+    window.allEoqData = null;
+    window.allFrequencyData = null;
+    window.allSetupCostData = null;
+    window.allTotalCostData = null;
 
+    $(document).ready(function() {
         // Add custom easing functions
         $.easing.easeOutCubic = function(x, t, b, c, d) {
             return c * ((t = t / d - 1) * t * t + 1) + b;
@@ -653,6 +840,15 @@ if (!isset($_SESSION['username'])) {
             }
         );
 
+        // Load riwayat data on page load
+        loadRiwayatData();
+
+        // Set default filter dates (last 30 days)
+        var today = new Date();
+        var lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+        $('#filter-sampai').val(today.toISOString().split('T')[0]);
+        $('#filter-dari').val(lastMonth.toISOString().split('T')[0]);
+
         // Form submission handler
         $('#dataForm').submit(function(event) {
             event.preventDefault();
@@ -722,10 +918,20 @@ if (!isset($_SESSION['username'])) {
                     window.allSetupCostData = response.data_setup_cost_all;
                     window.allTotalCostData = response.data_total_cost_all;
 
+                    // ======= SIMPAN RIWAYAT EOQ =======
+                    // Simpan hasil perhitungan ke riwayat (pindahkan ke dalam success handler)
+                    var dateRange = {
+                        dari: dari,
+                        sampai: sampai
+                    };
+
+                    // Panggil function untuk menyimpan riwayat
+                    saveEOQHistory(response, dateRange);
+
                     Swal.fire({
                         icon: "success",
                         title: "Berhasil",
-                        text: "Perhitungan EOQ berhasil diproses",
+                        text: "Perhitungan EOQ berhasil diproses dan disimpan ke riwayat",
                         timer: 2000,
                         showConfirmButton: false,
                         confirmButtonColor: "#dc2626"
@@ -760,505 +966,1365 @@ if (!isset($_SESSION['username'])) {
             });
         });
 
-        // Update EOQ Tables
-        function updateEOQTables(response) {
-            var data = response.data;
-            var data_eoq_all = response.data_eoq_all;
-            var data_frequency_all = response.data_frequency_all;
-            var data_total_cost_all = response.data_total_cost_all;
-            var data_setup_cost_all = response.data_setup_cost_all;
-
-            window.allProductData = data;
-            window.allEoqData = data_eoq_all;
-            window.allFrequencyData = data_frequency_all;
-            window.allTotalCostData = data_total_cost_all;
-            window.allSetupCostData = data_setup_cost_all;
-
-            var formatter = new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            });
-
-            var allEoqTable = buildAllEoqTable(data, data_eoq_all, data_frequency_all, data_total_cost_all,
-                data_setup_cost_all, formatter);
-            $('#data-eoq-all').html(allEoqTable);
-        }
-
-        // Build EOQ Table with Accordion
-        function buildAllEoqTable(data, data_eoq_all, data_frequency_all, data_total_cost_all,
-            data_setup_cost_all, formatter) {
-            var html = '';
-            $.each(data, function(index, item) {
-                var demand = Math.max(1, parseInt(item.stock_out) || 1);
-                var setupCost = parseFloat(data_setup_cost_all[index]) || (item.harga * 0.12);
-                var holdingCost = Math.max(1000, parseInt(item.biaya_penyimpanan) || 1000);
-                var eoqValue = Math.max(1, parseInt(data_eoq_all[index]) || 1);
-                var frequency = Math.max(1, parseInt(data_frequency_all[index]) || 1);
-                var totalCostEOQ = parseFloat(data_total_cost_all[index]) || 0;
-                var intervalDays = Math.round(365 / frequency);
-
-                var productName = item.nama_produk;
-
-                // BARIS DATA UTAMA
-                html += `<tr class="main-row" data-index="${index}">
-                <td class="text-center" style="width: 30px;"><strong>${index + 1}</strong></td>
-                <td class="text-left" style="width: 250px;">
-                    <span class="font-weight-bold" title="${item.nama_produk}">
-                        ${productName}
-                    </span>
-                </td>
-                <td class="text-center" style="width: 100px;">
-                    <span class="demand-value">
-                        ${demand.toLocaleString('id-ID')}
-                    </span>
-                </td>
-                <td class="text-center" style="width: 120px;">
-                    <span class="cost-value setup-cost">
-                        ${formatter.format(setupCost)}
-                        <small>(12%)</small>
-                    </span>
-                </td>
-                <td class="text-center" style="width: 120px;">
-                    <span class="cost-value">
-                        ${formatter.format(holdingCost)}
-                    </span>
-                </td>
-                <td class="text-center" style="width: 120px;">
-                    <span class="eoq-value-primary">
-                        ${eoqValue.toLocaleString('id-ID')}
-                    </span>
-                </td>
-                <td class="text-center" style="width: 80px;">
-                    <button type="button" class="btn btn-sm btn-outline-primary toggle-detail" data-index="${index}" 
-                            aria-expanded="false" aria-controls="detail-${index}" title="Lihat detail analisis EOQ">
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                </td>
-            </tr>`;
-
-                // BARIS DETAIL (TERSEMBUNYI)
-                html += `<tr class="detail-row" id="detail-${index}" style="display: none;" role="region" 
-                     aria-labelledby="detail-header-${index}">
-                <td colspan="7" class="detail-content">
-                    <div class="product-detail-container">
-                        <div class="detail-header" id="detail-header-${index}">
-                            <h5><i class="fas fa-info-circle me-2"></i>Detail Analisis EOQ - ${item.nama_produk}</h5>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="detail-card">
-                                    <h6><i class="fas fa-box me-2"></i>Informasi Produk</h6>
-                                    <table class="table table-sm table-borderless">
-                                        <tr>
-                                            <td><strong>Nama Produk:</strong></td>
-                                            <td>${item.nama_produk}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Supplier:</strong></td>
-                                            <td>${item.nama_sup}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Harga Produk:</strong></td>
-                                            <td>${formatter.format(item.harga)}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="detail-card">
-                                    <h6><i class="fas fa-calculator me-2"></i>Parameter EOQ</h6>
-                                    <table class="table table-sm table-borderless">
-                                        <tr>
-                                            <td><strong>Demand (D):</strong></td>
-                                            <td>${demand.toLocaleString('id-ID')} unit</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Biaya Pesan (S):</strong></td>
-                                            <td>${formatter.format(setupCost)}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Biaya Simpan (H):</strong></td>
-                                            <td>${formatter.format(holdingCost)}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="detail-card result-card">
-                                    <h6><i class="fas fa-chart-line me-2"></i>Hasil Perhitungan</h6>
-                                    <table class="table table-sm table-borderless">
-                                        <tr>
-                                            <td><strong>EOQ Optimal:</strong></td>
-                                            <td class="text-primary font-weight-bold">${eoqValue.toLocaleString('id-ID')} unit</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Frekuensi/Tahun:</strong></td>
-                                            <td>${frequency} kali per tahun</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Interval (Hari):</strong></td>
-                                            <td>${intervalDays} hari</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="detail-card financial-card">
-                                    <h6><i class="fas fa-money-bill-wave me-2"></i>Analisis Biaya</h6>
-                                    <table class="table table-sm table-borderless">
-                                        <tr>
-                                            <td><strong>Total Cost EOQ:</strong></td>
-                                            <td class="text-success font-weight-bold">${formatter.format(Math.round(totalCostEOQ))}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Nilai Penjualan:</strong></td>
-                                            <td>${formatter.format(item.pendapatan)}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <div class="detail-card formula-card">
-                                    <h6><i class="fas fa-square-root-alt me-2"></i>Formula Perhitungan</h6>
-                                    <div class="formula-display-detail">
-                                        EOQ = √((2 × D × S) / H)
-                                    </div>
-                                    <div class="calculation-example">
-                                        <small class="text-muted">
-                                            <strong>Perhitungan untuk produk ini:</strong><br>
-                                            EOQ = √((2 × ${demand.toLocaleString('id-ID')} × ${formatter.format(setupCost)}) / ${formatter.format(holdingCost)})<br>
-                                            EOQ = <strong>${eoqValue.toLocaleString('id-ID')} unit</strong>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="detail-actions mt-3 text-center">
-                            <button type="button" class="btn btn-secondary btn-sm toggle-detail" data-index="${index}"
-                                    title="Tutup detail">
-                                <i class="fas fa-chevron-up me-1"></i> Tutup Detail
-                            </button>
-                        </div>
-                    </div>
-                </td>
-            </tr>`;
-            });
-            return html;
-        }
-
-        // Event handler untuk toggle detail dengan animasi enhanced
-        $(document).on('click', '.toggle-detail', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var index = $(this).data('index');
-            var detailRow = $('#detail-' + index);
-            var mainRow = $(this).closest('.main-row');
-            var icon = $(this).find('i');
-            var button = $(this);
-
-            // Disable button sementara untuk mencegah multiple clicks
-            button.prop('disabled', true);
-
-            // Add ripple effect
-            addRippleEffect(button, e);
-
-            if (detailRow.is(':visible')) {
-                // Tutup detail dengan animasi
-                closeDetailWithAnimation(detailRow, mainRow, icon, button);
-            } else {
-                // Tutup semua detail lain terlebih dahulu
-                closeAllDetails().then(() => {
-                    // Buka detail yang diklik dengan animasi
-                    openDetailWithAnimation(detailRow, mainRow, icon, button, index);
-                });
-            }
-        });
-
-        // Function untuk menutup detail dengan animasi
-        function closeDetailWithAnimation(detailRow, mainRow, icon, button) {
-            // Add closing animation class
-            detailRow.addClass('animating-up');
-
-            // Animate icon rotation
-            icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-            button.removeClass('rotating').attr('aria-expanded', 'false');
-
-            // Remove active state from main row
-            mainRow.removeClass('active');
-
-            // Hide with animation
-            detailRow.slideUp(400, 'easeInOutCubic', function() {
-                detailRow.removeClass('animating-up active');
-                button.prop('disabled', false);
-            });
-        }
-
-        // Function untuk membuka detail dengan animasi
-        function openDetailWithAnimation(detailRow, mainRow, icon, button, index) {
-            // Add active state to main row
-            mainRow.addClass('active');
-
-            // Animate icon rotation
-            icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
-            button.addClass('rotating').attr('aria-expanded', 'true');
-
-            // Add opening animation class
-            detailRow.addClass('animating-down active');
-
-            // Show with animation
-            detailRow.slideDown(500, 'easeOutCubic', function() {
-                detailRow.removeClass('animating-down');
-                button.prop('disabled', false);
-
-                // Trigger staggered animation for detail cards
-                animateDetailCards(detailRow);
-
-                // Scroll to detail dengan smooth animation
-                setTimeout(() => {
-                    scrollToDetail(detailRow);
-                }, 100);
-            });
-        }
-
-        // Function untuk menutup semua detail
-        function closeAllDetails() {
-            return new Promise((resolve) => {
-                var openDetails = $('.detail-row:visible');
-
-                if (openDetails.length === 0) {
-                    resolve();
-                    return;
-                }
-
-                var closePromises = [];
-
-                openDetails.each(function() {
-                    var detailRow = $(this);
-                    var mainRow = detailRow.prev('.main-row');
-                    var toggleButton = mainRow.find('.toggle-detail');
-                    var icon = toggleButton.find('i');
-
-                    var promise = new Promise((resolveClose) => {
-                        // Remove active states
-                        mainRow.removeClass('active');
-                        detailRow.removeClass('active');
-                        icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-                        toggleButton.removeClass('rotating').attr('aria-expanded',
-                            'false');
-
-                        // Animate close
-                        detailRow.addClass('animating-up');
-                        detailRow.slideUp(300, 'easeInCubic', function() {
-                            detailRow.removeClass('animating-up');
-                            resolveClose();
-                        });
-                    });
-
-                    closePromises.push(promise);
-                });
-
-                Promise.all(closePromises).then(() => {
-                    resolve();
-                });
-            });
-        }
-
-        // Function untuk animasi detail cards dengan staggered effect
-        function animateDetailCards(detailRow) {
-            var cards = detailRow.find('.detail-card');
-
-            cards.each(function(index) {
-                var card = $(this);
-
-                // Reset animation
-                card.css({
-                    'opacity': '0',
-                    'transform': 'translateY(20px) scale(0.98)'
-                });
-
-                // Animate with delay
-                setTimeout(() => {
-                    card.css({
-                        'transition': 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                        'opacity': '1',
-                        'transform': 'translateY(0) scale(1)'
-                    });
-                }, index * 100 + 200);
-            });
-
-            // Animate formula display
-            var formulaDisplay = detailRow.find('.formula-display-detail');
-            if (formulaDisplay.length) {
-                setTimeout(() => {
-                    formulaDisplay.addClass('shimmer-effect');
-                    setTimeout(() => {
-                        formulaDisplay.removeClass('shimmer-effect');
-                    }, 1000);
-                }, 800);
-            }
-        }
-
-        // Function untuk smooth scroll ke detail
-        function scrollToDetail(detailRow) {
-            var targetOffset = detailRow.offset().top - 120;
-
-            $('html, body').animate({
-                scrollTop: targetOffset
-            }, {
-                duration: 600,
-                easing: 'easeOutCubic',
-                complete: function() {
-                    // Add subtle highlight effect
-                    detailRow.addClass('highlight-detail');
-                    setTimeout(() => {
-                        detailRow.removeClass('highlight-detail');
-                    }, 2000);
-                }
-            });
-        }
-
-        // Function untuk ripple effect
-        function addRippleEffect(button, event) {
-            var ripple = $('<span class="ripple"></span>');
-
-            var size = Math.max(button.outerWidth(), button.outerHeight());
-            var x = event.pageX - button.offset().left - size / 2;
-            var y = event.pageY - button.offset().top - size / 2;
-
-            ripple.css({
-                width: size,
-                height: size,
-                left: x,
-                top: y
-            });
-
-            button.append(ripple);
-
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        }
-
-        // Add hover effects untuk main rows
-        $(document).on('mouseenter', '.main-row', function() {
-            if (!$(this).hasClass('active')) {
-                $(this).addClass('hover-effect');
-            }
-        });
-
-        $(document).on('mouseleave', '.main-row', function() {
-            $(this).removeClass('hover-effect');
-        });
-
-        // Add keyboard navigation
-        $(document).on('keydown', '.toggle-detail', function(e) {
-            if (e.keyCode === 13 || e.keyCode === 32) { // Enter or Space
-                e.preventDefault();
-                $(this).trigger('click');
-            }
-        });
-
-        // Performance optimization: Debounce scroll events
-        let scrollTimeout;
-        $(window).on('scroll', function() {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                // Update visible detail animations
-                $('.detail-row:visible').each(function() {
-                    var detailRow = $(this);
-                    var rect = this.getBoundingClientRect();
-                    var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-
-                    if (isVisible && !detailRow.hasClass('in-viewport')) {
-                        detailRow.addClass('in-viewport');
-                        // Trigger subtle animations for cards dalam viewport
-                        detailRow.find('.detail-card').each(function(index) {
-                            var card = $(this);
-                            setTimeout(() => {
-                                card.addClass('animate-in-view');
-                            }, index * 50);
-                        });
-                    }
-                });
-            }, 100);
-        });
-
-        // Print button handler
-        $('#btnPrint').click(function() {
-            if (!window.allProductData || !window.allEoqData || !window.allFrequencyData) {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Peringatan",
-                    text: "Silakan hitung EOQ terlebih dahulu sebelum mencetak laporan",
-                    confirmButtonColor: "#dc2626"
-                });
-                return;
-            }
-
-            var combinedData = dataToSave(window.allProductData, window.allEoqData, window
-                .allFrequencyData, window.allSetupCostData);
-            var jsonString = JSON.stringify(combinedData);
-            var encodedData = encodeURIComponent(jsonString);
-
-            var dari = $('#dari').val();
-            var sampai = $('#sampai').val();
-
-            Swal.fire({
-                icon: "success",
-                title: "Laporan Sedang Disiapkan",
-                text: "Laporan EOQ akan dibuka di tab baru",
-                timer: 2000,
-                showConfirmButton: false
-            });
-
-            window.open('../reports/export-eoq-pdf.php?data=' + encodedData + '&dari=' + dari +
-                '&sampai=' + sampai);
-        });
-
-        // Data save function
-        function dataToSave(allProductData, allEoqData, allFrequencyData, allSetupCostData) {
-            var dataToSave = [];
-            $.each(allProductData, function(index, d) {
-                var intervalDays = Math.round(365 / (allFrequencyData[index] || 12));
-                var setupCost = allSetupCostData ? allSetupCostData[index] : (d.harga * 0.12);
-
-                dataToSave.push({
-                    'nama_produk': d.nama_produk,
-                    'demand_tahunan': d.stock_out,
-                    'biaya_pemesanan': setupCost,
-                    'biaya_penyimpanan': d.biaya_penyimpanan,
-                    'eoq_optimal': allEoqData[index],
-                    'frekuensi_pesan': allFrequencyData[index],
-                    'interval_hari': intervalDays,
-                    'supplier': d.nama_sup,
-                    'nilai_penjualan': d.pendapatan,
-                    'harga_produk': d.harga
-                });
-            });
-            return dataToSave;
-        }
-
-        // Initialize tooltips if Bootstrap is available
-        if (typeof $().tooltip === 'function') {
-            $('[title]').tooltip({
-                placement: 'top',
-                trigger: 'hover'
-            });
-        }
-
         // Console log untuk debugging
         console.log('EOQ System with Accordion Animation initialized successfully!');
     });
+
+    // Event handlers untuk riwayat
+    $(document).on('click', '#refresh-riwayat', function() {
+        loadRiwayatData();
+    });
+
+    $(document).on('click', '#filter-riwayat', function() {
+        window.currentPage = 1;
+        loadRiwayatData();
+    });
+
+    $(document).on('click', '#reset-filter', function() {
+        $('#filter-dari').val('');
+        $('#filter-sampai').val('');
+        $('#filter-limit').val('10');
+        window.currentPage = 1;
+        loadRiwayatData();
+    });
+
+    $(document).on('click', '.btn-detail-riwayat', function() {
+        var riwayatId = $(this).data('id');
+        showDetailRiwayat(riwayatId);
+    });
+
+    $(document).on('click', '.btn-hapus-riwayat', function() {
+        var riwayatId = $(this).data('id');
+        var tanggal = $(this).data('tanggal');
+        var periode = $(this).data('periode');
+        showHapusRiwayat(riwayatId, tanggal, periode);
+    });
+
+    $(document).on('click', '#konfirmasi-hapus', function() {
+        hapusRiwayat(window.currentRiwayatId);
+    });
+
+    $(document).on('click', '#print-detail', function() {
+        printDetailRiwayat();
+    });
+
+    // Update EOQ Tables
+    function updateEOQTables(response) {
+        var data = response.data;
+        var data_eoq_all = response.data_eoq_all;
+        var data_frequency_all = response.data_frequency_all;
+        var data_total_cost_all = response.data_total_cost_all;
+        var data_setup_cost_all = response.data_setup_cost_all;
+
+        window.allProductData = data;
+        window.allEoqData = data_eoq_all;
+        window.allFrequencyData = data_frequency_all;
+        window.allTotalCostData = data_total_cost_all;
+        window.allSetupCostData = data_setup_cost_all;
+
+        var formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        });
+
+        var allEoqTable = buildAllEoqTable(data, data_eoq_all, data_frequency_all, data_total_cost_all,
+            data_setup_cost_all, formatter);
+        $('#data-eoq-all').html(allEoqTable);
+    }
+
+    // Build EOQ Table with Accordion
+    function buildAllEoqTable(data, data_eoq_all, data_frequency_all, data_total_cost_all, data_setup_cost_all,
+        formatter) {
+        var html = '';
+        $.each(data, function(index, item) {
+            var demand = Math.max(1, parseInt(item.stock_out) || 1);
+            var setupCost = parseFloat(data_setup_cost_all[index]) || (item.harga * 0.12);
+            var holdingCost = Math.max(1000, parseInt(item.biaya_penyimpanan) || 1000);
+            var eoqValue = Math.max(1, parseInt(data_eoq_all[index]) || 1);
+            var frequency = Math.max(1, parseInt(data_frequency_all[index]) || 1);
+            var totalCostEOQ = parseFloat(data_total_cost_all[index]) || 0;
+            var intervalDays = Math.round(365 / frequency);
+
+            var productName = item.nama_produk;
+
+            // BARIS DATA UTAMA
+            html += `<tr class="main-row" data-index="${index}">
+            <td class="text-center" style="width: 30px;"><strong>${index + 1}</strong></td>
+            <td class="text-left" style="width: 250px;">
+                <span class="font-weight-bold" title="${item.nama_produk}">
+                    ${productName}
+                </span>
+            </td>
+            <td class="text-center" style="width: 100px;">
+                <span class="demand-value">
+                    ${demand.toLocaleString('id-ID')}
+                </span>
+            </td>
+            <td class="text-center" style="width: 120px;">
+                <span class="cost-value setup-cost">
+                    ${formatter.format(setupCost)}
+                    <small>(12%)</small>
+                </span>
+            </td>
+            <td class="text-center" style="width: 120px;">
+                <span class="cost-value">
+                    ${formatter.format(holdingCost)}
+                </span>
+            </td>
+            <td class="text-center" style="width: 120px;">
+                <span class="eoq-value-primary">
+                    ${eoqValue.toLocaleString('id-ID')}
+                </span>
+            </td>
+            <td class="text-center" style="width: 80px;">
+                <button type="button" class="btn btn-sm btn-outline-primary toggle-detail" data-index="${index}" 
+                        aria-expanded="false" aria-controls="detail-${index}" title="Lihat detail analisis EOQ">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </td>
+        </tr>`;
+
+            // BARIS DETAIL (TERSEMBUNYI)
+            html += `<tr class="detail-row" id="detail-${index}" style="display: none;" role="region" 
+             aria-labelledby="detail-header-${index}">
+            <td colspan="7" class="detail-content">
+                <div class="product-detail-container">
+                    <div class="detail-header" id="detail-header-${index}">
+                        <h5><i class="fas fa-info-circle me-2"></i>Detail Analisis EOQ - ${item.nama_produk}</h5>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="detail-card">
+                                <h6><i class="fas fa-box me-2"></i>Informasi Produk</h6>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Nama Produk:</strong></td>
+                                        <td>${item.nama_produk}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Supplier:</strong></td>
+                                        <td>${item.nama_sup}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Harga Produk:</strong></td>
+                                        <td>${formatter.format(item.harga)}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-card">
+                                <h6><i class="fas fa-calculator me-2"></i>Parameter EOQ</h6>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Demand (D):</strong></td>
+                                        <td>${demand.toLocaleString('id-ID')} unit</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Biaya Pesan (S):</strong></td>
+                                        <td>${formatter.format(setupCost)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Biaya Simpan (H):</strong></td>
+                                        <td>${formatter.format(holdingCost)}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="detail-card result-card">
+                                <h6><i class="fas fa-chart-line me-2"></i>Hasil Perhitungan</h6>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>EOQ Optimal:</strong></td>
+                                        <td class="text-primary font-weight-bold">${eoqValue.toLocaleString('id-ID')} unit</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Frekuensi/Tahun:</strong></td>
+                                        <td>${frequency} kali per tahun</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Interval (Hari):</strong></td>
+                                        <td>${intervalDays} hari</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-card financial-card">
+                                <h6><i class="fas fa-money-bill-wave me-2"></i>Analisis Biaya</h6>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Total Cost EOQ:</strong></td>
+                                        <td class="text-success font-weight-bold">${formatter.format(Math.round(totalCostEOQ))}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Nilai Penjualan:</strong></td>
+                                        <td>${formatter.format(item.pendapatan)}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="detail-card formula-card">
+                                <h6><i class="fas fa-square-root-alt me-2"></i>Formula Perhitungan</h6>
+                                <div class="formula-display-detail">
+                                    EOQ = √((2 × D × S) / H)
+                                </div>
+                                <div class="calculation-example">
+                                    <small class="text-muted">
+                                        <strong>Perhitungan untuk produk ini:</strong><br>
+                                        EOQ = √((2 × ${demand.toLocaleString('id-ID')} × ${formatter.format(setupCost)}) / ${formatter.format(holdingCost)})<br>
+                                        EOQ = <strong>${eoqValue.toLocaleString('id-ID')} unit</strong>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-actions mt-3 text-center">
+                        <button type="button" class="btn btn-secondary btn-sm toggle-detail" data-index="${index}"
+                                title="Tutup detail">
+                            <i class="fas fa-chevron-up me-1"></i> Tutup Detail
+                        </button>
+                    </div>
+                </div>
+            </td>
+        </tr>`;
+        });
+        return html;
+    }
+
+    // Event handler untuk toggle detail dengan animasi enhanced
+    $(document).on('click', '.toggle-detail', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var index = $(this).data('index');
+        var detailRow = $('#detail-' + index);
+        var mainRow = $(this).closest('.main-row');
+        var icon = $(this).find('i');
+        var button = $(this);
+
+        // Disable button sementara untuk mencegah multiple clicks
+        button.prop('disabled', true);
+
+        // Add ripple effect
+        addRippleEffect(button, e);
+
+        if (detailRow.is(':visible')) {
+            // Tutup detail dengan animasi
+            closeDetailWithAnimation(detailRow, mainRow, icon, button);
+        } else {
+            // Tutup semua detail lain terlebih dahulu
+            closeAllDetails().then(() => {
+                // Buka detail yang diklik dengan animasi
+                openDetailWithAnimation(detailRow, mainRow, icon, button, index);
+            });
+        }
+    });
+
+    // Function untuk menutup detail dengan animasi
+    function closeDetailWithAnimation(detailRow, mainRow, icon, button) {
+        // Add closing animation class
+        detailRow.addClass('animating-up');
+
+        // Animate icon rotation
+        icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        button.removeClass('rotating').attr('aria-expanded', 'false');
+
+        // Remove active state from main row
+        mainRow.removeClass('active');
+
+        // Hide with animation
+        detailRow.slideUp(400, 'easeInOutCubic', function() {
+            detailRow.removeClass('animating-up active');
+            button.prop('disabled', false);
+        });
+    }
+
+    // Function untuk membuka detail dengan animasi
+    function openDetailWithAnimation(detailRow, mainRow, icon, button, index) {
+        // Add active state to main row
+        mainRow.addClass('active');
+
+        // Animate icon rotation
+        icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        button.addClass('rotating').attr('aria-expanded', 'true');
+
+        // Add opening animation class
+        detailRow.addClass('animating-down active');
+
+        // Show with animation
+        detailRow.slideDown(500, 'easeOutCubic', function() {
+            detailRow.removeClass('animating-down');
+            button.prop('disabled', false);
+
+            // Trigger staggered animation for detail cards
+            animateDetailCards(detailRow);
+
+            // Scroll to detail dengan smooth animation
+            setTimeout(() => {
+                scrollToDetail(detailRow);
+            }, 100);
+        });
+    }
+
+    // Function untuk menutup semua detail
+    function closeAllDetails() {
+        return new Promise((resolve) => {
+            var openDetails = $('.detail-row:visible');
+
+            if (openDetails.length === 0) {
+                resolve();
+                return;
+            }
+
+            var closePromises = [];
+
+            openDetails.each(function() {
+                var detailRow = $(this);
+                var mainRow = detailRow.prev('.main-row');
+                var toggleButton = mainRow.find('.toggle-detail');
+                var icon = toggleButton.find('i');
+
+                var promise = new Promise((resolveClose) => {
+                    // Remove active states
+                    mainRow.removeClass('active');
+                    detailRow.removeClass('active');
+                    icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                    toggleButton.removeClass('rotating').attr('aria-expanded', 'false');
+
+                    // Animate close
+                    detailRow.addClass('animating-up');
+                    detailRow.slideUp(300, 'easeInCubic', function() {
+                        detailRow.removeClass('animating-up');
+                        resolveClose();
+                    });
+                });
+
+                closePromises.push(promise);
+            });
+
+            Promise.all(closePromises).then(() => {
+                resolve();
+            });
+        });
+    }
+
+    // Function untuk animasi detail cards dengan staggered effect
+    function animateDetailCards(detailRow) {
+        var cards = detailRow.find('.detail-card');
+
+        cards.each(function(index) {
+            var card = $(this);
+
+            // Reset animation
+            card.css({
+                'opacity': '0',
+                'transform': 'translateY(20px) scale(0.98)'
+            });
+
+            // Animate with delay
+            setTimeout(() => {
+                card.css({
+                    'transition': 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    'opacity': '1',
+                    'transform': 'translateY(0) scale(1)'
+                });
+            }, index * 100 + 200);
+        });
+
+        // Animate formula display
+        var formulaDisplay = detailRow.find('.formula-display-detail');
+        if (formulaDisplay.length) {
+            setTimeout(() => {
+                formulaDisplay.addClass('shimmer-effect');
+                setTimeout(() => {
+                    formulaDisplay.removeClass('shimmer-effect');
+                }, 1000);
+            }, 800);
+        }
+    }
+
+    // Function untuk smooth scroll ke detail
+    function scrollToDetail(detailRow) {
+        var targetOffset = detailRow.offset().top - 120;
+
+        $('html, body').animate({
+            scrollTop: targetOffset
+        }, {
+            duration: 600,
+            easing: 'easeOutCubic',
+            complete: function() {
+                // Add subtle highlight effect
+                detailRow.addClass('highlight-detail');
+                setTimeout(() => {
+                    detailRow.removeClass('highlight-detail');
+                }, 2000);
+            }
+        });
+    }
+
+    // Function untuk ripple effect
+    function addRippleEffect(button, event) {
+        var ripple = $('<span class="ripple"></span>');
+
+        var size = Math.max(button.outerWidth(), button.outerHeight());
+        var x = event.pageX - button.offset().left - size / 2;
+        var y = event.pageY - button.offset().top - size / 2;
+
+        ripple.css({
+            width: size,
+            height: size,
+            left: x,
+            top: y
+        });
+
+        button.append(ripple);
+
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    }
+
+    // Add hover effects untuk main rows
+    $(document).on('mouseenter', '.main-row', function() {
+        if (!$(this).hasClass('active')) {
+            $(this).addClass('hover-effect');
+        }
+    });
+
+    $(document).on('mouseleave', '.main-row', function() {
+        $(this).removeClass('hover-effect');
+    });
+
+    // Add keyboard navigation
+    $(document).on('keydown', '.toggle-detail', function(e) {
+        if (e.keyCode === 13 || e.keyCode === 32) { // Enter or Space
+            e.preventDefault();
+            $(this).trigger('click');
+        }
+    });
+
+    // Performance optimization: Debounce scroll events
+    let scrollTimeout;
+    $(window).on('scroll', function() {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            // Update visible detail animations
+            $('.detail-row:visible').each(function() {
+                var detailRow = $(this);
+                var rect = this.getBoundingClientRect();
+                var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+                if (isVisible && !detailRow.hasClass('in-viewport')) {
+                    detailRow.addClass('in-viewport');
+                    // Trigger subtle animations for cards dalam viewport
+                    detailRow.find('.detail-card').each(function(index) {
+                        var card = $(this);
+                        setTimeout(() => {
+                            card.addClass('animate-in-view');
+                        }, index * 50);
+                    });
+                }
+            });
+        }, 100);
+    });
+
+    // Print button handler
+    $('#btnPrint').click(function() {
+        if (!window.allProductData || !window.allEoqData || !window.allFrequencyData) {
+            Swal.fire({
+                icon: "warning",
+                title: "Peringatan",
+                text: "Silakan hitung EOQ terlebih dahulu sebelum mencetak laporan",
+                confirmButtonColor: "#dc2626"
+            });
+            return;
+        }
+
+        var combinedData = dataToSave(window.allProductData, window.allEoqData, window.allFrequencyData, window
+            .allSetupCostData);
+        var jsonString = JSON.stringify(combinedData);
+        var encodedData = encodeURIComponent(jsonString);
+
+        var dari = $('#dari').val();
+        var sampai = $('#sampai').val();
+
+        Swal.fire({
+            icon: "success",
+            title: "Laporan Sedang Disiapkan",
+            text: "Laporan EOQ akan dibuka di tab baru",
+            timer: 2000,
+            showConfirmButton: false
+        });
+
+        window.open('../reports/export-eoq-pdf.php?data=' + encodedData + '&dari=' + dari + '&sampai=' +
+            sampai);
+    });
+
+    // Data save function
+    function dataToSave(allProductData, allEoqData, allFrequencyData, allSetupCostData) {
+        var dataToSave = [];
+        $.each(allProductData, function(index, d) {
+            var intervalDays = Math.round(365 / (allFrequencyData[index] || 12));
+            var setupCost = allSetupCostData ? allSetupCostData[index] : (d.harga * 0.12);
+
+            // PERBAIKAN SUPPLIER: Pastikan supplier name valid dan tidak kosong
+            var supplierName = 'Unknown Supplier'; // Default
+
+            // Debug log data asli
+            console.log(`Product ${index} (${d.nama_produk}) original data:`, {
+                nama_sup: d.nama_sup,
+                supplier_id: d.supplier_id,
+                typeof_nama_sup: typeof d.nama_sup
+            });
+
+            // Cek nama_sup terlebih dahulu
+            if (d.nama_sup && typeof d.nama_sup === 'string') {
+                var cleanSupplier = d.nama_sup.trim();
+
+                // Pastikan bukan angka, kosong, atau '0'
+                if (cleanSupplier !== '' && cleanSupplier !== '0' && cleanSupplier !== 'null' && !(/^\d+$/.test(
+                        cleanSupplier))) {
+                    supplierName = cleanSupplier;
+                    console.log(`Product ${index}: Using nama_sup = "${supplierName}"`);
+                } else {
+                    console.log(`Product ${index}: nama_sup invalid ("${cleanSupplier}"), using default`);
+                }
+            } else {
+                console.log(`Product ${index}: nama_sup not found or not string, using default`);
+            }
+
+            // Final log
+            console.log(`Product ${index}: Final supplier = "${supplierName}"`);
+
+            dataToSave.push({
+                'nama_produk': d.nama_produk,
+                'demand_tahunan': d.stock_out,
+                'biaya_pemesanan': setupCost,
+                'biaya_penyimpanan': d.biaya_penyimpanan,
+                'eoq_optimal': allEoqData[index],
+                'frekuensi_pesan': allFrequencyData[index],
+                'interval_hari': intervalDays,
+                'supplier': supplierName, // ← PERBAIKAN: Gunakan supplierName yang sudah divalidasi
+                'nama_sup': d.nama_sup, // ← TAMBAHAN: Kirim juga nama_sup asli untuk backup
+                'nilai_penjualan': d.pendapatan,
+                'harga_produk': d.harga
+            });
+        });
+
+        // Debug log final data
+        console.log('Final dataToSave:', dataToSave);
+
+        return dataToSave;
+    }
+
+
+
+    // Function untuk load data riwayat
+    function loadRiwayatData(page = 1) {
+        window.currentPage = page;
+
+        var filterDari = $('#filter-dari').val();
+        var filterSampai = $('#filter-sampai').val();
+        var limit = $('#filter-limit').val();
+
+        // Show loading
+        $('#riwayat-tbody').html(`
+        <tr>
+            <td colspan="9" class="text-center py-4">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                    <p class="mt-2 text-muted">Memuat data riwayat...</p>
+                </div>
+            </td>
+        </tr>
+    `);
+
+        $.ajax({
+            type: 'GET',
+            url: 'get_riwayat.php',
+            data: {
+                page: page,
+                limit: limit,
+                filter_dari: filterDari,
+                filter_sampai: filterSampai
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    displayRiwayatData(response.data);
+                    updatePagination(response.pagination);
+                    updateRiwayatInfo(response.pagination);
+                } else {
+                    showErrorRiwayat(response.message || 'Gagal memuat data riwayat');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading riwayat:', error);
+                showErrorRiwayat('Terjadi kesalahan saat memuat data riwayat');
+            }
+        });
+    }
+
+    // Function untuk menampilkan data riwayat
+    function displayRiwayatData(data) {
+        var html = '';
+        var formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        });
+
+        if (data.length === 0) {
+            html = `
+            <tr>
+                <td colspan="9" class="text-center py-4">
+                    <div class="no-data">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">Belum ada riwayat perhitungan EOQ</p>
+                        <small class="text-muted">Lakukan perhitungan EOQ untuk melihat riwayat</small>
+                    </div>
+                </td>
+            </tr>
+        `;
+        } else {
+            $.each(data, function(index, item) {
+                var rowNumber = ((window.currentPage - 1) * parseInt($('#filter-limit').val())) + index + 1;
+                var tanggalPerhitungan = new Date(item.tanggal_perhitungan).toLocaleString('id-ID', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                var periode =
+                    `${new Date(item.tanggal_dari).toLocaleDateString('id-ID')} - ${new Date(item.tanggal_sampai).toLocaleDateString('id-ID')}`;
+
+                html += `
+                <tr class="riwayat-row" data-id="${item.id}">
+                    <td class="text-center"><strong>${rowNumber}</strong></td>
+                    <td>
+                        <div class="tanggal-info">
+                            <strong>${tanggalPerhitungan}</strong>
+                            <br><small class="text-muted">${getTimeAgo(item.tanggal_perhitungan)}</small>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-info periode-badge">${periode}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-primary">${item.total_produk}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="demand-badge">${parseInt(item.total_demand).toLocaleString('id-ID')}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="eoq-badge">${parseFloat(item.avg_eoq).toLocaleString('id-ID')}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="cost-badge">${formatter.format(item.total_cost_eoq)}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="user-badge">${item.username || 'System'}</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-info btn-detail-riwayat" 
+                                    data-id="${item.id}" title="Lihat Detail">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger btn-hapus-riwayat" 
+                                    data-id="${item.id}" 
+                                    data-tanggal="${tanggalPerhitungan}"
+                                    data-periode="${periode}"
+                                    title="Hapus Riwayat">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            });
+        }
+
+        $('#riwayat-tbody').html(html);
+    }
+
+    // Function untuk menampilkan error
+    function showErrorRiwayat(message) {
+        $('#riwayat-tbody').html(`
+        <tr>
+            <td colspan="9" class="text-center py-4">
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
+                    <p class="text-warning">${message}</p>
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="loadRiwayatData()">
+                        <i class="fas fa-redo me-1"></i> Coba Lagi
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `);
+    }
+
+    // Function untuk update pagination
+    function updatePagination(pagination) {
+        var html = '';
+
+        if (pagination.total_pages > 1) {
+            // Previous button
+            if (pagination.current_page > 1) {
+                html += `
+                <li class="page-item">
+                    <a class="page-link" href="#" onclick="loadRiwayatData(${pagination.current_page - 1})">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            }
+
+            // Page numbers
+            var startPage = Math.max(1, pagination.current_page - 2);
+            var endPage = Math.min(pagination.total_pages, pagination.current_page + 2);
+
+            for (var i = startPage; i <= endPage; i++) {
+                var activeClass = (i === pagination.current_page) ? 'active' : '';
+                html += `
+                <li class="page-item ${activeClass}">
+                    <a class="page-link" href="#" onclick="loadRiwayatData(${i})">${i}</a>
+                </li>
+            `;
+            }
+
+            // Next button
+            if (pagination.current_page < pagination.total_pages) {
+                html += `
+                <li class="page-item">
+                    <a class="page-link" href="#" onclick="loadRiwayatData(${pagination.current_page + 1})">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            }
+        }
+
+        $('#riwayat-pagination').html(html);
+    }
+
+    // Function untuk update info riwayat
+    function updateRiwayatInfo(pagination) {
+        $('#total-riwayat').text(pagination.total_records);
+        $('#showing-from').text(pagination.from);
+        $('#showing-to').text(pagination.to);
+        $('#total-records').text(pagination.total_records);
+    }
+
+    // Function untuk menampilkan detail riwayat
+    // function showDetailRiwayat(riwayatId) {
+    //     $('#modalDetailRiwayat').modal('show');
+
+    //     // Reset content
+    //     $('#modal-detail-content').html(`
+    //     <div class="text-center py-4">
+    //         <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+    //         <p class="mt-2 text-muted">Memuat detail...</p>
+    //     </div>
+    // `);
+
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: 'get_detail_riwayat.php',
+    //         data: {
+    //             id: riwayatId
+    //         },
+    //         dataType: 'json',
+    //         success: function(response) {
+    //             if (response.success) {
+    //                 displayDetailRiwayat(response.data);
+    //             } else {
+    //                 $('#modal-detail-content').html(`
+    //                 <div class="alert alert-danger">
+    //                     <i class="fas fa-exclamation-triangle me-2"></i>
+    //                     ${response.message || 'Gagal memuat detail riwayat'}
+    //                 </div>
+    //             `);
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             $('#modal-detail-content').html(`
+    //             <div class="alert alert-danger">
+    //                 <i class="fas fa-exclamation-triangle me-2"></i>
+    //                 Terjadi kesalahan saat memuat detail riwayat
+    //             </div>
+    //         `);
+    //         }
+    //     });
+    // }
+
+    // versi testing detail riwayat  
+    function showDetailRiwayat(riwayatId) {
+        console.log('showDetailRiwayat called with ID:', riwayatId);
+
+        $('#modalDetailRiwayat').modal('show');
+
+        // Reset content
+        $('#modal-detail-content').html(`
+        <div class="text-center py-4">
+            <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+            <p class="mt-2 text-muted">Memuat detail...</p>
+        </div>
+    `);
+
+        $.ajax({
+            type: 'GET',
+            url: 'get_detail_riwayat.php',
+            data: {
+                id: riwayatId
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                console.log('Sending request to get_detail_riwayat.php with ID:', riwayatId);
+            },
+            success: function(response) {
+                console.log('Response received:', response);
+
+                if (response.success) {
+                    displayDetailRiwayat(response.data);
+                } else {
+                    console.error('API returned error:', response.message);
+                    $('#modal-detail-content').html(`
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Error:</strong> ${response.message || 'Gagal memuat detail riwayat'}<br>
+                        <small>Debug Info: ${JSON.stringify(response.debug_info || {})}</small>
+                    </div>
+                `);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error Details:');
+                console.error('Status:', status);
+                console.error('Error:', error);
+                console.error('Response Text:', xhr.responseText);
+                console.error('Status Code:', xhr.status);
+
+                let errorMessage = 'Terjadi kesalahan saat memuat detail riwayat';
+                let debugInfo = '';
+
+                try {
+                    let response = JSON.parse(xhr.responseText);
+                    if (response.message) {
+                        errorMessage = response.message;
+                    }
+                    if (response.debug_info) {
+                        debugInfo = JSON.stringify(response.debug_info, null, 2);
+                    }
+                } catch (e) {
+                    console.error('Failed to parse error response:', e);
+                    debugInfo = `Raw response: ${xhr.responseText}`;
+                }
+
+                $('#modal-detail-content').html(`
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>AJAX Error:</strong> ${errorMessage}<br>
+                    <strong>Status:</strong> ${xhr.status} ${status}<br>
+                    <strong>Error:</strong> ${error}<br>
+                    <details class="mt-2">
+                        <summary>Debug Information</summary>
+                        <pre style="font-size: 11px; max-height: 200px; overflow-y: auto;">${debugInfo}</pre>
+                    </details>
+                </div>
+            `);
+            }
+        });
+    }
+
+
+    // Function untuk menampilkan detail dalam modal
+    function displayDetailRiwayat(data) {
+        var formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        });
+
+        var tanggalPerhitungan = new Date(data.header.tanggal_perhitungan).toLocaleString('id-ID');
+        var periode =
+            `${new Date(data.header.tanggal_dari).toLocaleDateString('id-ID')} - ${new Date(data.header.tanggal_sampai).toLocaleDateString('id-ID')}`;
+
+        var html = `
+        <!-- Header Info -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="info-card">
+                    <h6><i class="fas fa-info-circle me-2"></i>Informasi Perhitungan</h6>
+                    <table class="table table-sm table-borderless">
+                        <tr>
+                            <td><strong>Tanggal Perhitungan:</strong></td>
+                            <td>${tanggalPerhitungan}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Periode Data:</strong></td>
+                            <td>${periode}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>User:</strong></td>
+                            <td>${data.header.username || 'System'}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Status:</strong></td>
+                            <td><span class="badge badge-success">${data.header.status}</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-card">
+                    <h6><i class="fas fa-chart-bar me-2"></i>Statistik Hasil</h6>
+                    <table class="table table-sm table-borderless">
+                        <tr>
+                            <td><strong>Total Produk:</strong></td>
+                            <td>${data.header.total_produk}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Demand:</strong></td>
+                            <td>${parseInt(data.header.total_demand).toLocaleString('id-ID')}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rata-rata EOQ:</strong></td>
+                            <td>${parseFloat(data.header.avg_eoq).toLocaleString('id-ID')}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Cost:</strong></td>
+                            <td>${formatter.format(data.header.total_cost_eoq)}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detail Products -->
+        <div class="detail-products">
+            <h6><i class="fas fa-list me-2"></i>Detail Per Produk</h6>
+            <div class="table-responsive">
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Produk</th>
+                            <th>Demand</th>
+                            <th>EOQ Optimal</th>
+                            <th>Frekuensi</th>
+                            <th>Biaya Setup</th>
+                            <th>Total Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    `;
+
+        if (data.details && data.details.length > 0) {
+            $.each(data.details, function(index, item) {
+                // PERBAIKAN SUPPLIER: Pastikan supplier tidak menampilkan '0'
+                var supplierDisplay = item.supplier;
+                if (!supplierDisplay || supplierDisplay === '0' || supplierDisplay === '' || supplierDisplay ===
+                    'null') {
+                    supplierDisplay = 'Unknown Supplier';
+                }
+
+                html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${item.nama_produk}</td>
+                            <td class="text-center">${parseInt(item.demand_tahunan).toLocaleString('id-ID')}</td>
+                            <td class="text-center"><strong>${parseInt(item.eoq_optimal).toLocaleString('id-ID')}</strong></td>
+                            <td class="text-center">${item.frekuensi_pesan}x/tahun</td>
+                            <td class="text-center">${formatter.format(item.biaya_pemesanan)}</td>
+                            <td class="text-center">${formatter.format(item.total_cost_eoq)}</td>
+                        </tr>
+            `;
+            });
+        } else {
+            html += `
+                        <tr>
+                            <td colspan="8" class="text-center py-3">
+                                <em class="text-muted">Tidak ada detail produk</em>
+                            </td>
+                        </tr>
+        `;
+        }
+
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Keterangan -->
+        ${data.header.keterangan ? `
+        <div class="mt-4">
+            <h6><i class="fas fa-sticky-note me-2"></i>Keterangan</h6>
+            <div class="alert alert-info">
+                ${data.header.keterangan}
+            </div>
+        </div>
+        ` : ''}
+    `;
+
+        $('#modal-detail-content').html(html);
+        window.currentRiwayatId = data.header.id;
+    }
+
+    // Function untuk menampilkan modal hapus
+    function showHapusRiwayat(riwayatId, tanggal, periode) {
+        window.currentRiwayatId = riwayatId;
+
+        $('#hapus-detail-info').html(`
+        <strong>Tanggal Perhitungan:</strong> ${tanggal}<br>
+        <strong>Periode Data:</strong> ${periode}
+    `);
+
+        $('#modalHapusRiwayat').modal('show');
+    }
+
+    // Function untuk hapus riwayat
+    function hapusRiwayat(riwayatId) {
+        console.log('Menghapus riwayat dengan ID:', riwayatId);
+
+        // Disable button dan show loading
+        $('#konfirmasi-hapus').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i> Menghapus...');
+
+        $.ajax({
+            type: 'POST',
+            url: 'hapus_riwayat.php',
+            data: {
+                id: riwayatId
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                console.log('Mengirim request hapus riwayat...');
+            },
+            success: function(response) {
+                console.log('Response hapus riwayat:', response);
+
+                $('#modalHapusRiwayat').modal('hide');
+
+                if (response && response.success) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: "Riwayat berhasil dihapus",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    // Reload riwayat data
+                    setTimeout(() => {
+                        loadRiwayatData(window.currentPage);
+                    }, 500);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Gagal",
+                        text: response.message || "Gagal menghapus riwayat",
+                        confirmButtonColor: "#dc2626"
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error menghapus riwayat:');
+                console.error('Status:', status);
+                console.error('Error:', error);
+                console.error('Response Text:', xhr.responseText);
+
+                $('#modalHapusRiwayat').modal('hide');
+
+                let errorMessage = "Terjadi kesalahan saat menghapus riwayat";
+
+                // Try to parse error response
+                try {
+                    let response = JSON.parse(xhr.responseText);
+                    if (response.message) {
+                        errorMessage = response.message;
+                    }
+                } catch (e) {
+                    console.error('Failed to parse error response:', e);
+                }
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: errorMessage,
+                    confirmButtonColor: "#dc2626"
+                });
+            },
+            complete: function() {
+                // Reset button state
+                $('#konfirmasi-hapus').prop('disabled', false).html(
+                    '<i class="fas fa-trash me-1"></i> Ya, Hapus');
+            }
+        });
+    }
+
+
+    // Function untuk print detail
+    function printDetailRiwayat() {
+        if (!window.currentRiwayatId) {
+            Swal.fire({
+                icon: "warning",
+                title: "Peringatan",
+                text: "Tidak ada data yang dipilih untuk dicetak"
+            });
+            return;
+        }
+
+        window.open(`print_detail_riwayat.php?id=${window.currentRiwayatId}`, '_blank');
+    }
+
+    // Function untuk menyimpan riwayat setelah perhitungan EOQ berhasil
+    function saveEOQHistory(eoqData, dateRange) {
+        // Validasi data input
+        if (!eoqData || !eoqData.data || !dateRange) {
+            console.warn('Data tidak lengkap untuk menyimpan riwayat');
+            return;
+        }
+
+        // Validasi statistics
+        if (!eoqData.statistics) {
+            console.warn('Statistics data tidak tersedia');
+            return;
+        }
+
+        console.log('Menyimpan riwayat EOQ...', {
+            products: eoqData.data.length,
+            dateRange: dateRange,
+            sample_product: eoqData.data[0]
+        });
+
+        var historyData = {
+            tanggal_dari: dateRange.dari,
+            tanggal_sampai: dateRange.sampai,
+            statistics: eoqData.statistics,
+            products: []
+        };
+
+        // Prepare product data dengan validasi supplier yang diperbaiki
+        try {
+            $.each(eoqData.data, function(index, product) {
+                // Validasi data produk
+                if (!product || !product.nama_produk) {
+                    console.warn('Product data invalid at index', index);
+                    return true; // continue
+                }
+
+                var setupCost = 0;
+                var eoqValue = 0;
+                var frequency = 0;
+                var totalCost = 0;
+
+                // Safely get values with fallback
+                if (eoqData.data_setup_cost_all && eoqData.data_setup_cost_all[index]) {
+                    setupCost = parseFloat(eoqData.data_setup_cost_all[index]);
+                } else {
+                    setupCost = parseFloat(product.harga) * 0.12;
+                }
+
+                if (eoqData.data_eoq_all && eoqData.data_eoq_all[index]) {
+                    eoqValue = parseInt(eoqData.data_eoq_all[index]);
+                }
+
+                if (eoqData.data_frequency_all && eoqData.data_frequency_all[index]) {
+                    frequency = parseInt(eoqData.data_frequency_all[index]);
+                }
+
+                if (eoqData.data_total_cost_all && eoqData.data_total_cost_all[index]) {
+                    totalCost = parseFloat(eoqData.data_total_cost_all[index]);
+                }
+
+                var intervalDays = frequency > 0 ? Math.round(365 / frequency) : 0;
+
+                // PERBAIKAN SUPPLIER - Lebih permisif dalam menangani data supplier
+                var supplierName = '';
+
+                // Debug: Log semua kemungkinan field supplier
+                console.log(`Product ${index} all supplier fields:`, {
+                    nama_sup: product.nama_sup,
+                    supplier: product.supplier,
+                    sup_name: product.sup_name,
+                    supplier_name: product.supplier_name,
+                    kode_sup: product.kode_sup
+                });
+
+                // Prioritas 1: Cek field 'nama_sup'
+                if (product.nama_sup && product.nama_sup !== null && product.nama_sup !== undefined) {
+                    var cleanNamaSup = String(product.nama_sup).trim();
+                    if (cleanNamaSup !== '' && cleanNamaSup !== '0' && cleanNamaSup !== 'null') {
+                        supplierName = cleanNamaSup;
+                    }
+                }
+
+                // Prioritas 2: Cek field 'supplier'
+                if (!supplierName && product.supplier && product.supplier !== null && product.supplier !==
+                    undefined) {
+                    var cleanSupplier = String(product.supplier).trim();
+                    if (cleanSupplier !== '' && cleanSupplier !== '0' && cleanSupplier !== 'null') {
+                        supplierName = cleanSupplier;
+                    }
+                }
+
+                // Prioritas 3: Cek field lain yang mungkin mengandung nama supplier
+                if (!supplierName) {
+                    var supplierFields = ['sup_name', 'supplier_name', 'nama_supplier'];
+                    for (var i = 0; i < supplierFields.length; i++) {
+                        var field = supplierFields[i];
+                        if (product[field] && product[field] !== null && product[field] !== undefined) {
+                            var cleanField = String(product[field]).trim();
+                            if (cleanField !== '' && cleanField !== '0' && cleanField !== 'null') {
+                                supplierName = cleanField;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // Jika masih kosong, gunakan default berdasarkan produk atau supplier ID
+                if (!supplierName) {
+                    if (product.sup_id && product.sup_id !== '0') {
+                        supplierName = `Supplier ID: ${product.sup_id}`;
+                    } else {
+                        supplierName = 'Unknown Supplier';
+                    }
+                }
+
+                // Debug: Log hasil akhir supplier
+                console.log(`Product ${index} final supplier:`, {
+                    original_nama_sup: product.nama_sup,
+                    final_supplier: supplierName,
+                    sup_id: product.sup_id
+                });
+
+                var productData = {
+                    nama_produk: product.nama_produk || 'Unknown Product',
+                    demand_tahunan: parseInt(product.stock_out) || 0,
+                    harga_produk: parseFloat(product.harga) || 0,
+                    biaya_pemesanan: setupCost,
+                    biaya_penyimpanan: parseFloat(product.biaya_penyimpanan) || 0,
+                    eoq_optimal: eoqValue,
+                    frekuensi_pesan: frequency,
+                    interval_hari: intervalDays,
+                    total_cost_eoq: totalCost,
+                    supplier: supplierName, // Ini yang akan digunakan utama
+                    nama_sup: product.nama_sup, // Backup untuk debugging
+                    sup_id: product.sup_id, // ID supplier untuk query database
+                    nilai_penjualan: parseFloat(product.pendapatan) || 0
+                };
+
+                historyData.products.push(productData);
+            });
+
+            console.log('History data prepared:', {
+                productsCount: historyData.products.length,
+                statistics: historyData.statistics,
+                sampleProduct: historyData.products[0] || 'No products',
+                allSuppliers: historyData.products.map(p => ({
+                    nama_produk: p.nama_produk,
+                    supplier: p.supplier,
+                    sup_id: p.sup_id
+                }))
+            });
+
+            // Kirim data ke server
+            $.ajax({
+                type: 'POST',
+                url: 'save_riwayat.php',
+                data: {
+                    history_data: JSON.stringify(historyData)
+                },
+                dataType: 'json',
+                timeout: 15000, // 15 second timeout
+                beforeSend: function() {
+                    console.log('Mengirim data riwayat ke server...');
+                    console.log('Data being sent:', historyData);
+                },
+                success: function(response) {
+                    console.log('Response save riwayat:', response);
+
+                    if (response && response.success) {
+                        console.log('Riwayat EOQ berhasil disimpan');
+
+                        // Refresh riwayat data tanpa notifikasi
+                        setTimeout(() => {
+                            loadRiwayatData(1);
+                        }, 1000);
+                    } else {
+                        console.error('Gagal menyimpan riwayat:', response.message);
+                        // Show error to user if it's critical
+                        if (response.debug_info) {
+                            console.error('Debug info:', response.debug_info);
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error saving history:');
+                    console.error('Status:', status);
+                    console.error('Error:', error);
+                    console.error('Response Text:', xhr.responseText);
+
+                    // Try to parse error response
+                    try {
+                        var errorResponse = JSON.parse(xhr.responseText);
+                        console.error('Parsed error:', errorResponse);
+                    } catch (e) {
+                        console.error('Could not parse error response');
+                    }
+                }
+            });
+
+        } catch (e) {
+            console.error('Error preparing history data:', e);
+        }
+    }
+
+
+    // Helper function untuk menghitung waktu yang lalu
+    function getTimeAgo(dateString) {
+        var now = new Date();
+        var date = new Date(dateString);
+        var diffMs = now - date;
+        var diffMins = Math.floor(diffMs / 60000);
+        var diffHours = Math.floor(diffMs / 3600000);
+        var diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 60) {
+            return diffMins <= 1 ? 'Baru saja' : diffMins + ' menit yang lalu';
+        } else if (diffHours < 24) {
+            return diffHours + ' jam yang lalu';
+        } else if (diffDays < 7) {
+            return diffDays + ' hari yang lalu';
+        } else {
+            return date.toLocaleDateString('id-ID');
+        }
+    }
+
+    // Initialize tooltips if Bootstrap is available
+    if (typeof $().tooltip === 'function') {
+        $('[title]').tooltip({
+            placement: 'top',
+            trigger: 'hover'
+        });
+    }
     </script>
 
 </body>

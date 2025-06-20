@@ -31,25 +31,27 @@ try {
     // TAHAP 2: QUERY DATABASE UNTUK MENGAMBIL DATA TRANSAKSI PENJUALAN
     // ============================================================================
 
+    // PERBAIKAN: Pastikan supplier di-join dan diambil dengan benar
     $query = mysqli_query(
         $conn,
         "SELECT 
-            MIN(tp.id) as id,
-            COALESCE(p.biaya_penyimpanan, 1000) as biaya_penyimpanan,
-            p.nama_produk, 
-            MIN(tp.harga) as harga,
-            s.nama_satuan,
-            sup.nama_sup,
-            SUM(tp.stock_out) as stock_out,
-            SUM(CAST(tp.stock_out AS DECIMAL) * CAST(tp.harga AS DECIMAL)) as pendapatan
-        FROM transaksi_penjualan AS tp 
-        INNER JOIN produk AS p ON tp.produk_id = p.id
-        INNER JOIN user AS u ON tp.user_id = u.id
-        INNER JOIN satuan AS s ON tp.satuan_id = s.id
-        INNER JOIN supplier AS sup ON tp.sup_id = sup.id
-        WHERE tp.tanggal BETWEEN '$dari' AND '$sampai'
-        GROUP BY p.id, p.nama_produk, p.biaya_penyimpanan, s.nama_satuan, sup.nama_sup
-        ORDER BY pendapatan DESC"
+        MIN(tp.id) as id,
+        COALESCE(p.biaya_penyimpanan, 1000) as biaya_penyimpanan,
+        p.nama_produk, 
+        MIN(tp.harga) as harga,
+        s.nama_satuan,
+        COALESCE(NULLIF(TRIM(sup.nama_sup), ''), 'Unknown Supplier') as nama_sup, -- ← PERBAIKAN
+        sup.id as supplier_id,
+        SUM(tp.stock_out) as stock_out,
+        SUM(CAST(tp.stock_out AS DECIMAL) * CAST(tp.harga AS DECIMAL)) as pendapatan
+    FROM transaksi_penjualan AS tp 
+    INNER JOIN produk AS p ON tp.produk_id = p.id
+    INNER JOIN user AS u ON tp.user_id = u.id
+    INNER JOIN satuan AS s ON tp.satuan_id = s.id
+    LEFT JOIN supplier AS sup ON tp.sup_id = sup.id  -- ← UBAH ke LEFT JOIN
+    WHERE tp.tanggal BETWEEN '$dari' AND '$sampai'
+    GROUP BY p.id, p.nama_produk, p.biaya_penyimpanan, s.nama_satuan, sup.nama_sup, sup.id
+    ORDER BY pendapatan DESC"
     );
 
     // Cek apakah query berhasil dieksekusi
@@ -71,15 +73,28 @@ try {
     // Loop untuk mengambil semua data dan validasi
     while ($data = mysqli_fetch_assoc($query)) {
         // Validasi dan normalisasi data numerik
-        // Pastikan semua nilai numerik valid dan tidak 0 atau negatif
-        $data['stock_out'] = max(1, (int)$data['stock_out']); // Demand minimal 1 unit
-        $data['harga'] = max(1, (int)$data['harga']); // Harga minimal Rp 1
+        $data['stock_out'] = max(1, (int)$data['stock_out']);
+        $data['harga'] = max(1, (int)$data['harga']);
         $data['pendapatan'] = (float)$data['pendapatan'];
-        $data['biaya_penyimpanan'] = max(100, (int)$data['biaya_penyimpanan']); // Biaya simpan minimal Rp 100
+        $data['biaya_penyimpanan'] = max(100, (int)$data['biaya_penyimpanan']);
 
-        // Tambahkan ke array data
+        // PERBAIKAN SUPPLIER: Pastikan nama_sup tidak kosong
+        if (empty($data['nama_sup']) || $data['nama_sup'] === null || trim($data['nama_sup']) === '') {
+            $data['nama_sup'] = 'Unknown Supplier';
+        } else {
+            $data['nama_sup'] = trim($data['nama_sup']);
+            // Jika masih berupa angka, ganti dengan Unknown
+            if (is_numeric($data['nama_sup']) || $data['nama_sup'] === '0') {
+                $data['nama_sup'] = 'Unknown Supplier';
+            }
+        }
+
+        // Debug log
+        error_log("Product: " . $data['nama_produk'] . " | Supplier: " . $data['nama_sup'] . " | Supplier ID: " . ($data['supplier_id'] ?? 'NULL'));
+
         $datas[] = $data;
     }
+
 
     // Pastikan ada data yang valid setelah pengolahan
     if (empty($datas)) {
@@ -172,11 +187,10 @@ try {
         // TAHAP 4.6: LOG PERHITUNGAN UNTUK DEBUGGING (OPSIONAL)
         // ====================================================================
 
-        // Uncomment baris di bawah untuk debugging
-        /*
-        error_log("Produk: " . $datas[$i]['nama_produk'] . 
-                  " | D: $demand | S: $setup_cost | H: $holding_cost | EOQ: $eoq_rounded");
-        */
+        // Log supplier untuk debugging
+        error_log("EOQ Calculation - Product: " . $datas[$i]['nama_produk'] .
+            " | Supplier: " . $datas[$i]['nama_sup'] .
+            " | D: $demand | S: $setup_cost | H: $holding_cost | EOQ: $eoq_rounded");
     }
 
     // ============================================================================
@@ -316,6 +330,7 @@ try {
             'sample_calculation' => array(
                 'product_name' => $sample_product ? $sample_product['nama_produk'] : 'No data',
                 'product_price' => $sample_product ? $sample_product['harga'] : 0,
+                'supplier_name' => $sample_product ? $sample_product['nama_sup'] : 'No supplier',
                 'setup_cost_12_percent' => $sample_setup_cost,
                 'demand' => $sample_product ? $sample_product['stock_out'] : 0,
                 'holding_cost' => $sample_product ? $sample_product['biaya_penyimpanan'] : 0,
@@ -327,15 +342,18 @@ try {
                 'all_eoq_positive' => min($data_eoq_all) > 0,
                 'all_frequency_positive' => min($data_frequency_all) > 0,
                 'all_setup_cost_positive' => min($data_setup_cost_all) > 0,
-                'data_consistency' => count($data_eoq_all) === count($datas)
+                'data_consistency' => count($data_eoq_all) === count($datas),
+                'all_suppliers_valid' => array_reduce($datas, function ($carry, $item) {
+                    return $carry && !empty($item['nama_sup']) && $item['nama_sup'] !== '0';
+                }, true)
             )
         ),
 
         // Timestamp dan versi
         'metadata' => array(
             'calculation_timestamp' => date('Y-m-d H:i:s'),
-            'version' => '2.0 - Fixed Version',
-            'algorithm' => 'Standard EOQ Formula with Dynamic Setup Cost'
+            'version' => '2.1 - Fixed Supplier Version',
+            'algorithm' => 'Standard EOQ Formula with Dynamic Setup Cost and Proper Supplier Join'
         )
     ), JSON_PRETTY_PRINT);
 } catch (Exception $e) {
@@ -369,44 +387,3 @@ try {
         mysqli_close($conn);
     }
 }
-
-// ============================================================================
-// DOKUMENTASI PERUBAHAN DARI VERSI SEBELUMNYA:
-// ============================================================================
-
-/*
-PERBAIKAN YANG DILAKUKAN:
-
-1. MENGHILANGKAN FALLBACK LOGIC YANG BERMASALAH
-   - Hapus fallback calculation yang menyebabkan EOQ = stock_out/12
-   - Hapus validasi final yang mengubah nilai EOQ yang sudah benar
-
-2. MEMPERBAIKI FORMULA EOQ
-   - Menggunakan formula standar EOQ tanpa modifikasi
-   - Pembulatan hanya dilakukan sekali di akhir perhitungan
-   - Validasi minimal value yang masuk akal (1 unit)
-
-3. MENAMBAH VALIDASI INPUT YANG LEBIH KETAT
-   - Validasi semua parameter numerik
-   - Error handling yang lebih detail
-   - Consistency check untuk semua array hasil
-
-4. MEMPERBAIKI SETUP COST CALCULATION
-   - Minimal setup cost dari Rp 1000 menjadi Rp 100 (lebih realistis)
-   - Minimal holding cost menjadi Rp 100
-
-5. MENAMBAH DOKUMENTASI DAN DEBUGGING
-   - Komentar detail untuk setiap tahap
-   - Debug info yang lengkap
-   - Sample calculation untuk verifikasi
-
-6. ERROR HANDLING YANG LEBIH BAIK
-   - Try-catch yang comprehensive
-   - Error logging untuk debugging
-   - Informative error messages
-
-HASIL YANG DIHARAPKAN:
-- EOQ hasil sistem sekarang harus sama dengan perhitungan manual
-- Tidak ada lagi fallback logic yang mengacaukan hasil
-- Perhitungan mengikuti formula EOQ standar secara konsisten
-*/
