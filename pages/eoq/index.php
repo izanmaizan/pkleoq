@@ -387,7 +387,7 @@ if (!isset($_SESSION['username'])) {
                                 </div>
 
                                 <!-- EOQ Implementation Guidelines -->
-                                <div class="analysis-section mb-4 implementation-guide">
+                                <!-- <div class="analysis-section mb-4 implementation-guide">
                                     <div class="section-header">
                                         <h5><i class="fas fa-cogs me-2"></i> Panduan Implementasi EOQ</h5>
                                         <p class="text-muted">Rekomendasi praktis untuk penerapan hasil analisis EOQ</p>
@@ -431,7 +431,7 @@ if (!isset($_SESSION['username'])) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <!-- Action Buttons -->
                                 <div class="text-center action-buttons">
