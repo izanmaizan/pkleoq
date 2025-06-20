@@ -1,12 +1,8 @@
 /* pages/karyawan/style.css */
 :root {
-  --karyawan-blue: #1e40af;
-  --karyawan-blue-dark: #1e3a8a;
-  --karyawan-blue-light: #3b82f6;
-  --karyawan-green: #059669;
-  --karyawan-green-dark: #047857;
-  --karyawan-orange: #ea580c;
-  --karyawan-orange-dark: #c2410c;
+  --karyawan-red: #dc2626;
+  --karyawan-red-dark: #b91c1c;
+  --karyawan-red-light: #f87171;
   --karyawan-white: #ffffff;
   --karyawan-gray-50: #f8fafc;
   --karyawan-gray-100: #f1f5f9;
@@ -20,11 +16,11 @@
   --karyawan-gray-900: #0f172a;
   --karyawan-gradient: linear-gradient(
     135deg,
-    var(--karyawan-blue) 0%,
-    var(--karyawan-blue-dark) 100%
+    var(--karyawan-red) 0%,
+    var(--karyawan-red-dark) 100%
   );
-  --karyawan-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.1),
-    0 2px 4px -1px rgba(30, 64, 175, 0.06);
+  --karyawan-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.1),
+    0 2px 4px -1px rgba(220, 38, 38, 0.06);
   --karyawan-success: #059669;
   --karyawan-info: #0284c7;
   --karyawan-warning: #d97706;
@@ -86,7 +82,7 @@
 
 .sidebar-brand-icon i {
   background: var(--karyawan-white);
-  color: var(--karyawan-blue);
+  color: var(--karyawan-red);
   padding: 0.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -172,14 +168,14 @@
 
 .collapse-item:hover {
   background: var(--karyawan-gray-50) !important;
-  color: var(--karyawan-blue) !important;
+  color: var(--karyawan-red) !important;
   text-decoration: none;
   transform: translateX(5px);
 }
 
 .collapse-item.active {
   background: var(--karyawan-gray-100) !important;
-  color: var(--karyawan-blue) !important;
+  color: var(--karyawan-red) !important;
   font-weight: 600;
 }
 
@@ -207,7 +203,7 @@
 }
 
 #sidebarToggleTop {
-  color: var(--karyawan-blue) !important;
+  color: var(--karyawan-red) !important;
   background: var(--karyawan-gray-100);
   border: none;
   width: 2.5rem;
@@ -248,7 +244,7 @@
 
 .dropdown-item:hover {
   background: var(--karyawan-gray-100);
-  color: var(--karyawan-blue);
+  color: var(--karyawan-red);
 }
 
 /* Welcome Banner - Karyawan Theme */
@@ -319,7 +315,7 @@
 
 /* Border Left Colors - Karyawan Theme */
 .border-left-primary {
-  border-left: 4px solid var(--karyawan-blue) !important;
+  border-left: 4px solid var(--karyawan-red) !important;
 }
 
 .border-left-success {
@@ -336,7 +332,7 @@
 
 /* Text Colors - Karyawan Theme */
 .text-primary {
-  color: var(--karyawan-blue) !important;
+  color: var(--karyawan-red) !important;
 }
 
 .text-success {
@@ -388,11 +384,11 @@
 .btn-primary:hover {
   background: linear-gradient(
     135deg,
-    var(--karyawan-blue-dark) 0%,
-    #1e3a8a 100%
+    var(--karyawan-red-dark) 0%,
+    #991b1b 100%
   );
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
   color: var(--karyawan-white);
 }
 
@@ -611,15 +607,15 @@ code {
   background: var(--karyawan-gradient);
   color: var(--karyawan-white);
   border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
   transition: all 0.2s ease;
 }
 
 .scroll-to-top:hover {
   background: linear-gradient(
     135deg,
-    var(--karyawan-blue-dark) 0%,
-    #1e3a8a 100%
+    var(--karyawan-red-dark) 0%,
+    #991b1b 100%
   );
   transform: scale(1.1);
   color: var(--karyawan-white);
@@ -727,7 +723,7 @@ code {
 .btn:focus,
 .nav-link:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 /* Print styles */
