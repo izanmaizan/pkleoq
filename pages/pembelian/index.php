@@ -72,39 +72,39 @@ if (!isset($_SESSION['username'])) {
             <hr class="sidebar-divider">
 
             <?php if ($_SESSION['role'] != 1): ?>
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Master Data
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Data Master</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Kelola Data:</h6>
-                        <a class="collapse-item" href="../supplier/index.php">
-                            <i class="fas fa-truck me-2"></i> Supplier
-                        </a>
-                        <a class="collapse-item" href="../produk/index.php">
-                            <i class="fas fa-boxes me-2"></i> Produk
-                        </a>
-                        <a class="collapse-item" href="../kategori/index.php">
-                            <i class="fas fa-tags me-2"></i> Kategori
-                        </a>
-                        <a class="collapse-item" href="../satuan/index.php">
-                            <i class="fas fa-balance-scale me-2"></i> Satuan
-                        </a>
-                    </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Master Data
                 </div>
-            </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-database"></i>
+                        <span>Data Master</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Kelola Data:</h6>
+                            <a class="collapse-item" href="../supplier/index.php">
+                                <i class="fas fa-truck me-2"></i> Supplier
+                            </a>
+                            <a class="collapse-item" href="../produk/index.php">
+                                <i class="fas fa-boxes me-2"></i> Produk
+                            </a>
+                            <a class="collapse-item" href="../kategori/index.php">
+                                <i class="fas fa-tags me-2"></i> Kategori
+                            </a>
+                            <a class="collapse-item" href="../satuan/index.php">
+                                <i class="fas fa-balance-scale me-2"></i> Satuan
+                            </a>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
             <?php endif; ?>
 
             <!-- Heading -->
@@ -144,9 +144,9 @@ if (!isset($_SESSION['username'])) {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Jenis Laporan:</h6>
                         <?php if ($_SESSION['role'] != 1): ?>
-                        <a class="collapse-item" href="../laporan/laporan_produk.php">
-                            <i class="fas fa-pills me-2"></i> Laporan Produk
-                        </a>
+                            <a class="collapse-item" href="../laporan/laporan_produk.php">
+                                <i class="fas fa-pills me-2"></i> Laporan Produk
+                            </a>
                         <?php endif; ?>
                         <a class="collapse-item" href="../laporan/laporan_pembelian.php">
                             <i class="fas fa-shopping-bag me-2"></i> Laporan Pembelian
@@ -159,19 +159,19 @@ if (!isset($_SESSION['username'])) {
             </li>
 
             <?php if ($_SESSION['role'] != 1): ?>
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Analisis
-            </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Analisis
+                </div>
 
-            <li class="nav-item">
-                <a class="nav-link" href="../eoq/index.php">
-                    <i class="fas fa-fw fa-calculator"></i>
-                    <span>Economic Order Quantity</span></a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../eoq/index.php">
+                        <i class="fas fa-fw fa-calculator"></i>
+                        <span>Economic Order Quantity</span></a>
+                </li>
             <?php endif; ?>
 
             <!-- Divider -->
@@ -500,314 +500,314 @@ if (!isset($_SESSION['username'])) {
 
     <!-- Script untuk fungsi crud -->
     <script>
-    $(document).ready(function() {
-        tblPembelian();
+        $(document).ready(function() {
+            tblPembelian();
 
-        // Add loading animation to cards
-        $('.card').each(function(index) {
-            $(this).css('animation-delay', (index * 0.1) + 's');
+            // Add loading animation to cards
+            $('.card').each(function(index) {
+                $(this).css('animation-delay', (index * 0.1) + 's');
+            });
+
+            // Enhanced button hover effects
+            $('.btn').hover(
+                function() {
+                    $(this).addClass('shadow-lg');
+                },
+                function() {
+                    $(this).removeClass('shadow-lg');
+                }
+            );
         });
 
-        // Enhanced button hover effects
-        $('.btn').hover(
-            function() {
-                $(this).addClass('shadow-lg');
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
             },
-            function() {
-                $(this).removeClass('shadow-lg');
-            }
-        );
-    });
+        });
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        },
-    });
+        $(document).on('click', '#btn-detail', function() {
+            var kode = $(this).data('kode');
 
-    $(document).on('click', '#btn-detail', function() {
-        var kode = $(this).data('kode');
+            $.ajax({
+                url: 'detail-pembelian.php',
+                type: 'POST',
+                data: {
+                    kode: kode
+                },
+                dataType: 'json',
+                success: function(data) {
+                    console.log('Detail data received:', data);
 
-        $.ajax({
-            url: 'detail-pembelian.php',
-            type: 'POST',
-            data: {
-                kode: kode
-            },
-            dataType: 'json',
-            success: function(data) {
-                console.log('Detail data received:', data);
+                    if (data && data.length > 0) {
+                        // Format tanggal dengan pengecekan yang lebih baik
+                        var formattedDate = 'Tanggal tidak valid';
 
-                if (data && data.length > 0) {
-                    // Format tanggal dengan pengecekan yang lebih baik
-                    var formattedDate = 'Tanggal tidak valid';
+                        if (data[0].tanggal && data[0].tanggal !== '0000-00-00') {
+                            try {
+                                // Coba parse tanggal
+                                var tgl = new Date(data[0].tanggal);
 
-                    if (data[0].tanggal && data[0].tanggal !== '0000-00-00') {
-                        try {
-                            // Coba parse tanggal
-                            var tgl = new Date(data[0].tanggal);
-
-                            // Periksa apakah tanggal valid
-                            if (!isNaN(tgl.getTime())) {
-                                var dd = String(tgl.getDate()).padStart(2, '0');
-                                var mm = String(tgl.getMonth() + 1).padStart(2, '0');
-                                var yyyy = tgl.getFullYear();
-                                formattedDate = dd + '-' + mm + '-' + yyyy;
-                            } else {
-                                // Jika gagal, coba format manual
-                                if (data[0].tanggal.includes('-')) {
-                                    var parts = data[0].tanggal.split('-');
-                                    if (parts.length >= 3) {
-                                        formattedDate = parts[2] + '-' + parts[1] + '-' + parts[0];
+                                // Periksa apakah tanggal valid
+                                if (!isNaN(tgl.getTime())) {
+                                    var dd = String(tgl.getDate()).padStart(2, '0');
+                                    var mm = String(tgl.getMonth() + 1).padStart(2, '0');
+                                    var yyyy = tgl.getFullYear();
+                                    formattedDate = dd + '-' + mm + '-' + yyyy;
+                                } else {
+                                    // Jika gagal, coba format manual
+                                    if (data[0].tanggal.includes('-')) {
+                                        var parts = data[0].tanggal.split('-');
+                                        if (parts.length >= 3) {
+                                            formattedDate = parts[2] + '-' + parts[1] + '-' + parts[0];
+                                        }
                                     }
                                 }
+                            } catch (e) {
+                                console.error('Error formatting date:', e);
+                                formattedDate = data[0].tanggal; // Fallback ke tanggal asli
                             }
-                        } catch (e) {
-                            console.error('Error formatting date:', e);
-                            formattedDate = data[0].tanggal; // Fallback ke tanggal asli
                         }
-                    }
 
-                    // Mengisi data ke dalam modal detail
-                    $('#detailModal').modal('show');
-                    $('#kodeTransaksi').html(data[0].kode_transaksi || '-');
-                    $('#tglTransaksi').html(formattedDate);
-                    $('#pic').html(data[0].nama || 'Unknown User');
+                        // Mengisi data ke dalam modal detail
+                        $('#detailModal').modal('show');
+                        $('#kodeTransaksi').html(data[0].kode_transaksi || '-');
+                        $('#tglTransaksi').html(formattedDate);
+                        $('#pic').html(data[0].nama || 'Unknown User');
 
-                    if (!data[0].keterangan || data[0].keterangan === '') {
-                        $('#keterangan').html(
-                            '<span class="text-muted">Tidak ada keterangan</span>');
+                        if (!data[0].keterangan || data[0].keterangan === '') {
+                            $('#keterangan').html(
+                                '<span class="text-muted">Tidak ada keterangan</span>');
+                        } else {
+                            $('#keterangan').html(data[0].keterangan);
+                        }
+
+                        $('#supplier').html((data[0].kode_sup || '') + ' - ' + (data[0].nama_sup ||
+                            'Unknown Supplier'));
+
+                        // Membuat variabel untuk menyimpan hasil yang akan ditampilkan
+                        var tableRows = '';
+                        var no = 1;
+                        var totalHarga = 0;
+
+                        // Loop untuk setiap baris data yang diterima
+                        for (var i = 0; i < data.length; i++) {
+                            var rowData = data[i];
+
+                            // Menambahkan baris data ke variabel tableRows
+                            tableRows += '<tr>';
+                            tableRows += '<td class="text-center">' + no++ + '</td>';
+                            tableRows += '<td><span class="font-weight-bold">' + (rowData.nama_produk ||
+                                '-') + '</span></td>';
+                            tableRows += '<td><span class="badge badge-info">' + (rowData.stock_in ||
+                                '0') + ' ' + (rowData.nama_satuan || '') + '</span></td>';
+                            tableRows += '<td><span class="text-success font-weight-bold">' +
+                                formatRupiah(rowData.harga || 0, 'Rp ') + '</span></td>';
+                            tableRows += '<td><span class="text-success font-weight-bold">' +
+                                formatRupiah(rowData.total_harga || 0, 'Rp ') + '</span></td>';
+                            tableRows += '</tr>';
+
+                            totalHarga += parseFloat(rowData.total_harga || 0);
+                        }
+
+                        // Memasukkan baris-baris data ke dalam tabel dengan id 'detailTable'
+                        $('#detailTable tbody').html(tableRows);
+
+                        // Menampilkan total harga pada bagian akhir tabel
+                        $('#totalHarga').html(formatRupiah(totalHarga, 'Rp '));
                     } else {
-                        $('#keterangan').html(data[0].keterangan);
-                    }
-
-                    $('#supplier').html((data[0].kode_sup || '') + ' - ' + (data[0].nama_sup ||
-                        'Unknown Supplier'));
-
-                    // Membuat variabel untuk menyimpan hasil yang akan ditampilkan
-                    var tableRows = '';
-                    var no = 1;
-                    var totalHarga = 0;
-
-                    // Loop untuk setiap baris data yang diterima
-                    for (var i = 0; i < data.length; i++) {
-                        var rowData = data[i];
-
-                        // Menambahkan baris data ke variabel tableRows
-                        tableRows += '<tr>';
-                        tableRows += '<td class="text-center">' + no++ + '</td>';
-                        tableRows += '<td><span class="font-weight-bold">' + (rowData.nama_produk ||
-                            '-') + '</span></td>';
-                        tableRows += '<td><span class="badge badge-info">' + (rowData.stock_in ||
-                            '0') + ' ' + (rowData.nama_satuan || '') + '</span></td>';
-                        tableRows += '<td><span class="text-success font-weight-bold">' +
-                            formatRupiah(rowData.harga || 0, 'Rp ') + '</span></td>';
-                        tableRows += '<td><span class="text-success font-weight-bold">' +
-                            formatRupiah(rowData.total_harga || 0, 'Rp ') + '</span></td>';
-                        tableRows += '</tr>';
-
-                        totalHarga += parseFloat(rowData.total_harga || 0);
-                    }
-
-                    // Memasukkan baris-baris data ke dalam tabel dengan id 'detailTable'
-                    $('#detailTable tbody').html(tableRows);
-
-                    // Menampilkan total harga pada bagian akhir tabel
-                    $('#totalHarga').html(formatRupiah(totalHarga, 'Rp '));
-                } else {
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Data tidak ditemukan',
-                        text: 'Data transaksi tidak ditemukan atau kosong'
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Ajax Error:', {
-                    status: status,
-                    error: error,
-                    responseText: xhr.responseText
-                });
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Terjadi kesalahan',
-                    text: 'Tidak dapat mengambil data detail transaksi: ' + error
-                });
-            }
-        });
-    });
-
-    $(document).on('click', '#btn-hapus', function() {
-
-        var id = $(this).data('id');
-
-        Swal.fire({
-            title: 'Konfirmasi Hapus Data',
-            text: "Apakah Anda yakin ingin menghapus transaksi pembelian ini?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc2626',
-            cancelButtonColor: '#6b7280',
-            confirmButtonText: '<i class="fas fa-trash me-1"></i> Ya, Hapus!',
-            cancelButtonText: '<i class="fas fa-times me-1"></i> Batal',
-            customClass: {
-                popup: 'swal2-popup-custom'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: "POST",
-                    url: "delete-pembelian.php",
-                    data: {
-                        id: id
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-
-                        //toast
-                        Toast.fire({
-                            icon: 'success',
-                            title: data.message
-                        });
-
-                        $('#tblPembelian').DataTable().ajax.reload();
-                    },
-                    error: function() {
                         Toast.fire({
                             icon: 'error',
-                            text: 'Terjadi kesalahan saat menghapus data'
+                            title: 'Data tidak ditemukan',
+                            text: 'Data transaksi tidak ditemukan atau kosong'
                         });
                     }
-                });
-            }
-        })
-    })
-
-    function formatRupiah(angka, prefix) {
-        var number_string = angka.toString().replace(/[^,\d]/g, ''),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
-        }
-
-        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-        return prefix === undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
-    }
-
-    function tblPembelian() {
-        $("#tblPembelian").DataTable({
-            lengthChange: true,
-            processing: true,
-            serverSide: false,
-            language: {
-                "lengthMenu": "Tampilkan _MENU_ data per halaman",
-                "zeroRecords": "Data tidak ditemukan",
-                "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
-                "infoEmpty": "Tidak ada data yang tersedia",
-                "infoFiltered": "(difilter dari _MAX_ total data)",
-                "search": "Cari:",
-                "paginate": {
-                    "first": "Pertama",
-                    "last": "Terakhir",
-                    "next": "Selanjutnya",
-                    "previous": "Sebelumnya"
                 },
-                "processing": "Memuat data..."
-            },
-            ajax: {
-                url: "pembelian-datatables.php",
-                type: "GET",
-                dataType: "json",
-                error: function(xhr, error, thrown) {
-                    console.error('DataTables Ajax Error:');
-                    console.error('Status:', xhr.status);
-                    console.error('Response:', xhr.responseText);
-                    console.error('Error:', error);
-                    console.error('Thrown:', thrown);
-
-                    // Tampilkan pesan error yang lebih informatif
+                error: function(xhr, status, error) {
+                    console.error('Ajax Error:', {
+                        status: status,
+                        error: error,
+                        responseText: xhr.responseText
+                    });
                     Toast.fire({
                         icon: 'error',
-                        title: 'Error loading data',
-                        text: 'Silakan cek console untuk detail error'
+                        title: 'Terjadi kesalahan',
+                        text: 'Tidak dapat mengambil data detail transaksi: ' + error
                     });
                 }
-            },
-            columns: [{
-                    data: null,
-                    sortable: false,
-                    render: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                },
-                {
-                    data: "kode_transaksi",
-                    name: "kode_transaksi",
-                    render: function(data, type, row) {
-                        return '<code class="text-primary">' + data + '</code>';
-                    }
-                },
-                {
-                    data: "tanggal",
-                    name: "tanggal",
-                    render: function(data, type, row) {
-                        // Data sudah diformat di server, langsung tampilkan
-                        if (data && data !== '-' && data !== 'Invalid Date') {
-                            return '<span class="text-muted">' + data + '</span>';
-                        } else {
-                            return '<span class="text-danger">Tanggal tidak valid</span>';
-                        }
-                    }
-                },
-                {
-                    data: "nama",
-                    name: "nama",
-                    render: function(data, type, row) {
-                        return '<span class="font-weight-bold">' + (data || 'Unknown User') + '</span>';
-                    }
-                },
-                {
-                    data: "keterangan",
-                    name: "keterangan",
-                    render: function(data, type, row) {
-                        if (!data || data === '' || data === null || data === '-') {
-                            return '<span class="text-muted font-italic">Tidak ada keterangan</span>';
-                        }
-                        if (data.length > 50) {
-                            return '<span title="' + data + '">' + data.substring(0, 50) + '...</span>';
-                        }
-                        return data;
-                    }
-                },
-                {
-                    data: "aksi",
-                    name: "aksi",
-                    orderable: false,
-                    searchable: false
-                }
-            ],
-            responsive: true,
-            order: [
-                [2, 'desc']
-            ], // Order by tanggal descending
-            pageLength: 10,
-            lengthMenu: [
-                [10, 25, 50, 100],
-                [10, 25, 50, 100]
-            ]
+            });
         });
-    }
+
+        $(document).on('click', '#btn-hapus', function() {
+
+            var id = $(this).data('id');
+
+            Swal.fire({
+                title: 'Konfirmasi Hapus Data',
+                text: "Apakah Anda yakin ingin menghapus transaksi pembelian ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: '<i class="fas fa-trash me-1"></i> Ya, Hapus!',
+                cancelButtonText: '<i class="fas fa-times me-1"></i> Batal',
+                customClass: {
+                    popup: 'swal2-popup-custom'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "delete-pembelian.php",
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+
+                            //toast
+                            Toast.fire({
+                                icon: 'success',
+                                title: data.message
+                            });
+
+                            $('#tblPembelian').DataTable().ajax.reload();
+                        },
+                        error: function() {
+                            Toast.fire({
+                                icon: 'error',
+                                text: 'Terjadi kesalahan saat menghapus data'
+                            });
+                        }
+                    });
+                }
+            })
+        })
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.toString().replace(/[^,\d]/g, ''),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix === undefined ? rupiah : (rupiah ? 'Rp ' + rupiah : '');
+        }
+
+        function tblPembelian() {
+            $("#tblPembelian").DataTable({
+                lengthChange: true,
+                processing: true,
+                serverSide: false,
+                language: {
+                    "lengthMenu": "Tampilkan _MENU_ data per halaman",
+                    "zeroRecords": "Data tidak ditemukan",
+                    "info": "Menampilkan halaman _PAGE_ dari _PAGES_",
+                    "infoEmpty": "Tidak ada data yang tersedia",
+                    "infoFiltered": "(difilter dari _MAX_ total data)",
+                    "search": "Cari:",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    },
+                    "processing": "Memuat data..."
+                },
+                ajax: {
+                    url: "pembelian-datatables.php",
+                    type: "GET",
+                    dataType: "json",
+                    error: function(xhr, error, thrown) {
+                        console.error('DataTables Ajax Error:');
+                        console.error('Status:', xhr.status);
+                        console.error('Response:', xhr.responseText);
+                        console.error('Error:', error);
+                        console.error('Thrown:', thrown);
+
+                        // Tampilkan pesan error yang lebih informatif
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Error loading data',
+                            text: 'Silakan cek console untuk detail error'
+                        });
+                    }
+                },
+                columns: [{
+                        data: null,
+                        sortable: false,
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        },
+                    },
+                    {
+                        data: "kode_transaksi",
+                        name: "kode_transaksi",
+                        render: function(data, type, row) {
+                            return '<code class="text-primary">' + data + '</code>';
+                        }
+                    },
+                    {
+                        data: "tanggal",
+                        name: "tanggal",
+                        render: function(data, type, row) {
+                            // Data sudah diformat di server, langsung tampilkan
+                            if (data && data !== '-' && data !== 'Invalid Date') {
+                                return '<span class="text-muted">' + data + '</span>';
+                            } else {
+                                return '<span class="text-danger">Tanggal tidak valid</span>';
+                            }
+                        }
+                    },
+                    {
+                        data: "nama",
+                        name: "nama",
+                        render: function(data, type, row) {
+                            return '<span class="font-weight-bold">' + (data || 'Unknown User') + '</span>';
+                        }
+                    },
+                    {
+                        data: "keterangan",
+                        name: "keterangan",
+                        render: function(data, type, row) {
+                            if (!data || data === '' || data === null || data === '-') {
+                                return '<span class="text-muted font-italic">Tidak ada keterangan</span>';
+                            }
+                            if (data.length > 50) {
+                                return '<span title="' + data + '">' + data.substring(0, 50) + '...</span>';
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        data: "aksi",
+                        name: "aksi",
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                responsive: true,
+                order: [
+                    [2, 'desc']
+                ], // Order by tanggal descending
+                pageLength: 10,
+                lengthMenu: [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ]
+            });
+        }
     </script>
 
 

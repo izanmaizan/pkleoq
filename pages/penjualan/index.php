@@ -262,21 +262,37 @@ if (!isset($_SESSION['username'])) {
                         unset($_SESSION['success']);
                     }
                     ?>
-
                     <!-- Content -->
                     <div class="card shadow card-stats">
                         <div class="card-header d-flex align-items-center justify-content-between">
                             <h6 class="m-0 font-weight-bold">
-                                <i class="fas fa-cash-register me-2"></i>Data Transaksi Penjualan
+                                <i class="fas fa-cash-register me-2"></i> Data Transaksi Penjualan
                             </h6>
-                            <a href="create-penjualan.php" class="btn btn-primary btn-sm btn-icon-split" id="btnAdd">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-plus"></i>
+                            <div class="d-flex align-items-center">
+                                <span class="badge badge-light mr-2">
+                                    <i class="fas fa-database me-1"></i> Data Penjualan
                                 </span>
-                                <span class="text">Tambah Transaksi</span>
-                            </a>
+                            </div>
                         </div>
                         <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <a href="create-penjualan.php" class="btn btn-primary btn-sm btn-icon-split"
+                                    id="btnAdd">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-plus"></i>
+                                    </span>
+                                    <span class="text">Tambah Transaksi</span>
+                                </a>
+                                <div class="d-flex align-items-center">
+                                    <div class="mr-3">
+                                        <span class="text-muted small">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Kelola data customer untuk transaksi penjualan
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="table table-hover" id="tblPenjualan" style="width: 100%;">
                                     <thead>
@@ -304,6 +320,7 @@ if (!isset($_SESSION['username'])) {
                             </div>
                         </div>
                     </div>
+
                     <!-- End of Content -->
 
                 </div>
